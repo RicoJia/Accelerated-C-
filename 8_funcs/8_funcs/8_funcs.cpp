@@ -1,4 +1,5 @@
-//
+// TODO: git hub: https://learn.adafruit.com/assets/26343
+// then use git commit -f "initial commit" to force commit instead of git commit -f "initial commit"??
 //  8_funcs.cpp
 //  8_funcs
 //
