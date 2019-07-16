@@ -19,8 +19,11 @@ b. commit the branch (saves)
         
 
 c. Merge changes locally
-            0. make sure everything is commited or stashed
-            1. git merge --no-ff                                ????
+            0. git stash                                       save your work aside for working on higher priority tasks. make sure everything is commited or stashed
+               git stash list                                  check out a list of stashes
+                        git stash apply stash@{0}                       you can save the changes back to your branch
+                        git stash pop                                   or you delete it.          
+            1. git merge branchB                               on branch B, merging branch A
 
 d. Push to remote
             1.git push origin new_branch_name                  push a new branch to this website
@@ -28,3 +31,13 @@ d. Push to remote
 e. pull request to merge into master??
 
 2. Working on forks (the entire repo with all branches)
+
+Z. BUGS
+            1. conflict (add/add): 
+            git diff                                                    check out the differences 
+            git diff branch1 branch2                                    then delete the wrong file
+            Then go to your branch, check out the <<<<< ==== >>>> marked lines, Edit them
+            git add.
+            git commit -m "fixed conflict"
+            
+            
