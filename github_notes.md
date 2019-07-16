@@ -18,7 +18,7 @@ b. commit the branch (saves)
             5(Optional). git config --global core.editor "editor name"      edit the commit message 
         
 
-c. Merge changes locally
+c. Merge two branches locally       ???
             0. git stash                                       save your work aside for working on higher priority tasks. make sure everything is commited or stashed
                git stash list                                  check out a list of stashes
                         git stash apply stash@{0}                       you can save the changes back to your branch
@@ -34,9 +34,11 @@ d. Push to remote
 e. pull request to merge into master??
 
 
-
 f. Get update from remote to local branch
             1. git fetch [name_of_your_remote]
+
+g. Delete a branch remotely
+            2. git push origin --delete branch_name
             
 2. Working on forks (the entire repo with all branches)
 
