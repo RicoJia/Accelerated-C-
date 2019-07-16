@@ -14,7 +14,7 @@ b. commit the branch (saves)
             3. git add filename                                 stage the new file. nothing being added right now but it's telling git that it's going to add something for commit
             4. git config --global user.name "name"             git needs your info
             git config --global user.email "email"           
-            5. git commit -m "message"                          commit with a message
+            5. git commit -m "message"                          commit with a message. BE SURE IT's IN YOUR BRANCH!!
             5(Optional). git config --global core.editor "editor name"      edit the commit message 
         
 
