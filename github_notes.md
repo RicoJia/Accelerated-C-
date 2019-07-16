@@ -1,3 +1,5 @@
+Sample work-flow: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+
 a. Working on branches (versions)
             0. git clone -b branch_name repo_name
             1. git branch -a                                check all existing branches in your repo directory;  * means current branch; HEAD is the pointer pointing to your current branch
