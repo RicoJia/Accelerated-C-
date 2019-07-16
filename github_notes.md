@@ -27,9 +27,17 @@ c. Merge changes locally
 
 d. Push to remote
             1.git push origin new_branch_name                  push a new branch to this website
+            1(optional). $ git remote add [name_of_your_remote] [name_of_your_new_branch]
+                         $ git push [name_of_your_new_remote] [url]
+            
 
 e. pull request to merge into master??
 
+
+
+f. Get update from remote to local branch
+            1. git fetch [name_of_your_remote]
+            
 2. Working on forks (the entire repo with all branches)
 
 Z. BUGS
