@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include "8_funcs.hpp"
+#include <iterator>
 
 using std::cin;
 using std::cout;
@@ -69,4 +70,38 @@ void test_transform()
 bool increment(double a)
 {
     return (a>2)?true:false;
+}
+
+void test_accumulate()
+{
+    int p[] = {1,2,3,4};
+    cout<<accumulate_algo(p, p+4, 3.0);
+}
+
+void test_search()
+{
+    int p[] = {1,2,3,4};
+    vector<int> q1={3,4}, q2= {3,4,5}, q3;
+    cout<<*search_algo(p, p+4, q1.begin(), q1.end())<<endl<<
+    *search_algo(p, p+4, q2.begin(), q2.end())<<endl<<
+    *search_algo(p, p+4, q3.begin(), q3.end())<<endl;
+}
+
+void test_find_if()
+{
+    cout<<"what number do you want to search in the secret Schrodinger Array?"<<endl;
+    int num;
+    cin>>num;
+    int p[] = {1,2,3,4};
+    cout<<*find_if_algo(std::begin(p), std::end(p), find_ur_num(num));
+}
+
+void test_partition()
+{
+    cout<<"what number do you want to set as partition (not included ) in the secret Schrodinger Array?"<<endl;
+    int num;
+    cin>>num;
+    vector<int>d = {1,2,6,7,8,3,4,5};
+    partition_algo(d.begin(), d.end(), less_than_ur_num(num));
+    print_vec(d);
 }
