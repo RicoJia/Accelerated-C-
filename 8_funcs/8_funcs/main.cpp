@@ -14,7 +14,7 @@ using std::cout;
 using std::endl;
 
 int main(int argc, const char * argv[]) {
-    test_remove_copy_if();
+    test_transform();
     
     return 0;
 }

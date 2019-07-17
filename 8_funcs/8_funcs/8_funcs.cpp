@@ -48,3 +48,25 @@ void test_remove_copy_if()
     remove_copy_if_algo(p, p+4, l.begin(), comp_remove_cope_if);
     print_vec<double>(l);
 }
+
+void test_remove()
+{
+    int p[] = {1,2,3,4};
+    vector<double> l(7);
+    copy_algo(p, p+4, l.begin());
+    vector<double> l2 (l.begin(),remove_algo(l.begin(), l.end(), 2));
+    print_vec<double>(l2);
+}
+
+void test_transform()
+{
+    int p[] = {1,2,3,4};
+    vector<double> l(7);
+    transform_algo(p, p+4, l.begin(), comp_remove_cope_if<int*>);
+    print_vec<double>(l);
+}
+
+bool increment(double a)
+{
+    return (a>2)?true:false;
+}

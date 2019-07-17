@@ -36,10 +36,9 @@ template <typename T1, typename T2> T2 copy_algo(T1 beg, T1 end, T2 beg_2)
     return beg_2;
 }
 void test_copy();
-void test_remove_copy_if();
 
 template <typename T1, typename T2> T2 remove_copy_if_algo(T1 beg, T1 end, T2 beg_2,bool(*pred)(T1))
-{
+{               //TODO: Try functors here
     while (beg!=end)
     {
        if(!pred(beg))
@@ -50,11 +49,35 @@ template <typename T1, typename T2> T2 remove_copy_if_algo(T1 beg, T1 end, T2 be
     return beg_2;
 }
 
-template <typename T> bool comp_remove_cope_if(T itr)
+template <typename T> bool comp_remove_cope_if(T itr)       // IMPORTANT: when you call this function, you need to supply the type of T with the function pointer, as a function pointer cannot point to a template, it needs to point to an "instantiation of the template", whose type should be clear!!!
 {
     return (*itr<=3)?true:false;
 }
+void test_remove_copy_if();
 
+template <typename T,typename V>
+T remove_algo(T beg, T end,V val)
+{
+    T temp = beg;
+    while (beg!=end)
+    {
+        if(*beg != val)
+            *temp++ = *beg++;
+        else
+            ++beg;
+    }
+    return temp;
+}
+void test_remove();
 
-
+template<typename T, typename V,typename Pred>
+void transform_algo(T beg, T end, V beg_2, Pred f)
+{
+    while (beg!=end)
+    {
+        *beg_2++ = f(beg++);          //Yes it works!
+    }
+}
+bool increment(double a);
+void test_transform();
 #endif /* __funcs_hpp */
