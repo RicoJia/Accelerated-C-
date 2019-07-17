@@ -27,6 +27,7 @@ c. Merge two branches locally       ???
                         git stash apply stash@{0}                       you can save the changes back to your branch
                         git stash pop                                   or you delete it.          
             1. git merge branchB                               on branch B, merging branch A
+            
    Merge two remote branches: 
             1. git clone repo.git                         you can download only one branch?? Well, check git branch -a to see all your options!! 
             2. git checkout destination_branch  (could be a remote one, like origin/something, but just type the name after origin
