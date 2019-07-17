@@ -17,6 +17,7 @@ b. commit the branch (saves)
             4. git config --global user.name "name"             git needs your info
             git config --global user.email "email"           
             5. git commit -m "message"                          commit with a message. BE SURE IT's IN YOUR BRANCH!!
+            IMPORTANT: git commit -a -m "message" saves all the hassle to git add and git commit!!
             5(Optional). git config --global core.editor "editor name"      edit the commit message 
         
 
