@@ -1,0 +1,1128 @@
+--------------------------------------chap0-------------------------------------------
+1. 每个程序都要有一个 int main. 在main function 比较特殊，你可以没有return 0， means success  （给编译器）。但是你还是应该习惯写return 0！
+	若你在main中写了return 1， 这只是告诉copmpiler 有 exit failure，但是没有任何实质性的效果
+2. 初始化：有些variable的若没初始化，就是内存刚好有的值
+3. double可以 setprecision 来控制小数点位数
+4. 定义
+	a. 类型： 内建类型，如int；其他定义： std::cout
+	b. header File: 每个std中的类型都有一个header file。如std::string，所以你要 #include <string>
+		1. 不能include function definition! inline 除外。 
+	c. 接口： 定义一个变量，就可以让我们做这个库允许我们做的事情。所有这些事情的几何就是接口
+  	d. Namespace: std is 标准库
+	e. 作用域： 比如{},比如name space. :: 为作用域运算符，NAME SPACE 为一种作用域，其作用是一群名字的集合. 一个函数一定有个{}！
+   	f. 表达式： std::cout<<"hello world"<<std::endl; 
+	g. << is "左结合"， 结合完了还是最左边的类型.（std::cout is out stream）
+std::cout<<"hello world"<<std::endl； = (std::cout<<"hello world")<<std::endl;
+“hello”+“world” = “hello world”
+	h. Object: a block of memory with type. Some doesn't have type
+5. “自由风格”： 你可以任意换行， 除了： 
+	“”括起来的
+	// 
+	#include 名称
+6. 符号
+	/t is tab; /b is back；  /0 is 空字符，自动添加到char【】的结尾
+	/* /**/ */ 不成立，因为结束于第一个*/ 
+	//则是一整个行都被comment out
+
+7. std::cout<<e; 将e的值写到标准流，之后就可以做链式输出；
+8. const: 程序必须在创造的时候定义，这样保证其在运算过程中不变；并且，这只是一个标记，任何变量前面都可以加这个东西。字符串直接量：const string （别忘了最后还一个\0,这个是自动添加的）
+9. 你必须定义至少一个const std::string，因为若不定义"123"，是char[]！
+	const std::string lol = "123" + "456" 是不可以的！必须要 const std::string lol1 = "123"; const std::string lol = lol1+"456"
+10. 好习惯：不要超额做，就做employer要求的，然后再reference document 中引述
+	ask for those opportunities after at least half a year of good standing and work. 
+11. fix others' bugs will be a good thing to do
+12. 好习惯： 用using std::cout 而不是using namespace std
+13. #define后没有 ； 
+14. 你可以做a = b = c = 1; 
+
+------------------------------------------------------------------chap1 String-------------------------------------------------------------------------------------------------------------------
+1.告诉type 与变量的名字，有助于产生高效的机器code
+2.char 字符串： 忽略一开始的空字符 （/t,/b,/n,//）,止于第一个空字符
+	std::cin 便是输入一个字符串。他忽略一开始所有的空字符，止于第一个空字符。
+		 【注意】第一个空格键之后的内容还在cin里！ 
+	std::cin>>s   将std istream输入到s中
+	std::string 可以为一个字符，std::string lol = "!",但也可以是'!'
+	
+3. {}可以用来局限变量
+	int main()
+	{
+		int lol = 1;
+		{
+			int lol1 = 2;
+			std::cout<<lol1;
+		}
+	}
+	
+4. Buffer 
+	cout 将一个char【】储存在buffer里，当buffer刷新的时候，统一输出，这样就不用一个一个char的输出了。不然，有可能长期滞留在buffer【直到program结束】 所以你应该经常刷新buffer。刷新buffer：1. buffer full 2. cin 3. ask to refresh， 如std：：endl
+5. overloading: 一个运算符对不同类型的variable有不同的含义
+6. string 有个member function， 教str.size()
+7. 可以用std::string(size,'some char') 来构建一个单个char 复制得到的string
+	注意，这个形式只适用于std::string,不适用于array，. 
+	vector 可以用assign来达到相同的目的
+8. wchar_t： 宽字符，可包含日语字符?? 
+	一个char 是1个byte，wchar_t 可以表示任何两个byte的enconding，比如utf——16.
+	cin，cout都不管用，要用wcin，wcout
+9. ++i vs i++: 两个都会将新的值储存在i中，++i是先加，再返回i，i++是先反回i，再加。 
+￥￥￥10. 可以用 
+	void foo()
+		{
+		static const int lookup[5] = {1,2,3,4,5}; 
+		}
+在函数被call时，可以有个look up
+11. semicolon ;:  mandatory ONLY AFTER declarations. legal but not mandatory after other statements
+	Declaration is statement that defines a variable or "hold the tank"
+	statement has type and variable. 
+
+#12. 好习惯： 用特定的类去储存特定量的值； 比如：  std::string::size_type: 是储存一个string size 的type。原因是： int只有2^16 最大 （一个int 2 个byte）。这个他的值最大。 
+13. 好习惯： 写std::cout,这样你知道这个cout是从哪个库里来的。：：叫作用域运算符。是所有运算符中等级最高的。 
+	     可以在{}{using namespace std;}来在一个作用域中定义std	
+￥￥￥14. boolean： 你不用（），因为逻辑运算符不如代数运算符强。
+15. 块语句{}: if (boolean) statement. 这里块语句是用{}来括起来的，作为一整个statement的。
+16. int i = 0; while(i != end_value){i++；} 是一个很好的习惯。 这样能保证程序运行end value次。
+	for loop 也是，不过i++到每一步最后执行！
+	i!=end_value 是一个“invariant”
+￥￥￥17. !x has higher priority than *,/
+18. size_t: 任意长度非负整数. unsigned long, unsigned long long, unsigned short, unsigned int.  string::size_type, 专门针对string 的。
+	int: 4bytes, short: 2 bytes, long: 8 bytes
+19. unsigned int: 32 bit size_t. 
+char: 1 byte. 
+
+20 string::size 和string::length
+	【技巧】两者等价，都是返回多少bytes。 但是因为char 是1个byte, 所以这也是多少个char。 
+
+
+-------------------------------------------------------------chap3 Batches of Data-------------------------------------------------------------------------------------------------------------------
+￥￥￥1. cout<<"string a""string b"; is equivalent to cout<<""string astring b";两个string literals 中间隔了一个\0.
+	这么做是因为有时一个string太长了。你可以分成两行写
+2. ????cin>>x	
+	这个程序的side effect是将cin 的值输入到x中。主要作用是cin，作为istream，一旦成功输入了一个数字，会返回一个true值，类似于将非0值转换成true，0转换成false
+		while(cin>>x){ }	本来输入一个词，空格后cin就会结束输入。但是有了while,空格，空行都只是分开每个输入的值，但是你要按ctrl+d来结束输入。 
+	cin>>a>>b 等价于 cin>>a; cin>>b; 中间一个空白符就可以将他们分开了。
+3. setprecision: this is a manipulator用来设significant digits （3位有效数字）, included in <iomanip> 中的std 头文件,因而std::setprecision. 用法： cout<<setprecision(3)<<number
+	设完之后，你若什么东西都不做，这个string的有效数字就一直只是三位。所以你要改回去。 用，std::streamsize. 
+		streamsize 是在<ios>, 用来储存现有的cout 的 precision. 改回setprecision： streamsize prec = cout.precision(); cout<<setprecision(3)<<number<<setprecision(prec); 	
+	作为一个manipulator，endl 因为太常用了，所以在<iostream>中就有
+4. float vs double: double 精度在10位以上，并且有时比float快，但是占用8个byte。float存在的原因就是只占用4个byte。
+
+5. Value Initialization, default initialization, zero initialization.  
+	a. default initialization: 要么是default constructor initialize， 如果不initialize，则variable中的值是内存中之前写的值。
+		1. class with constructor is called。  well-formed: 有constructor， ill-formed: 无 constructor，base class (including static)则没有initialization。  Vector, string 等都有自己的constructor，所以他们都自动initialize!
+		2. int array[10] 就是default initialized， 这种情况是没有initialization。 
+		3. static class member initialization，必须像下面这样????
+			class foo
+			{
+			public: int i,j,k;
+			   static double c;
+			   // int arr[10];
+			};
+			double foo::c = 10.0;
+		4. dynamic storage using "new" with no constructor
+		5. scalar　type: int a, double i; 
+		6. 如果T is class type, 那么用new 来initialize一个array: new T[10]中，每一个element都会被default-initialized. 所以很大的overhead! 
+
+
+	b. Zero-initialization: 自动填入0
+		 
+
+	c.Value - initialization:
+		1.  int i() 	initialize 为１．
+		2. int (2) Initialize 为2. 
+
+但是一个non-static POD member 	   of a non POD class is default initialized, 即random value!
+	每一个array【i】其实是一个double/int。。。类型的object
+	????不过vector<double>::size_type size; string::size_type不能被default intialized???? 
+
+	
+	c. array的element，非pod都是default initialize的。 也就是内存默认的. 
+	
+	3. Value Initialization: 在Map中，当一个新的key出现的时候，element会自动initialize to 0. 又称zero initialization
+
+6. 在command line里结束输入一个文件，ctrl+d （linux），或ctrl+z
+6. vector<T>v: vector of T type. vector应用的是template class
+	a. v.push_back(num): 在添加一个新的数的同时，也将其size自动加1（side effect）. 并且这个是一个相对普适的
+	b. v.size(): 读取一个vector 的size
+	c. vector<double>::size_type size  这个是定义一个double的vector的size，若没有预先定义，则它本身可以最长到unsigned long
+		typedef vector<double>::size_type vectorsz
+		vectorsz size; 		这么做是因为vector<double>可能写起来太长了。 
+	d. vector<double>::size_type size = v.size()	两个size一点都不冲突。 .size()的.反映了其作用域（scope）	
+	e. v.begin（）是一个vector中的第一个值, v.end（）是一个vector中虚构的最后一个值之后的一个值
+
+	using std::vector, 你要在一开始标明！
+	有vector<string>!
+7. <algorithm>中的function: 
+	max(a,b); 
+	sort(v.begin（）,v.end（）)，弄出来的是non-decreasing的数列.  	【注意】：一定不要用const & 在sort上！
+8. standard library负责storage 收放工作，并且很快；
+	sort： nlog(n)
+	添加一个vector： n
+￥￥￥ 9.int 转化为unsigned int时是自动的。 
+￥￥￥ 10. 比较两个string： stringa == stringb
+
+11. convert string to number:atoi(char[]); number to string:stringstream
+	to clear stringstream: ss.str("");
+
+
+--------------------------------------chap4 Organizing Program -------------------------------------------------------------------
+1. func(int a){a++;}
+	here int a is a parameter,其实是一个local variable. In int main(){}, you can pass Arguments to Initialize parameters.
+	这样，你实际上是copy argument 的值给local variable a， 你自然也可以改变这个a！
+
+2. Throw: 当你有error的时候，你可以见一个domain_error 类型的exception object，然后副带上一个error msg。domain erorr在<stdexcpet>定义。 同时，你要有std::domain_error
+	 throw domain_error("Peligroso!") 当程序执行了throw 之后,程序会产生这个exception object， 然后退出这一个function。 你可以在主function中接着个exception object 来产生 error message？？
+
+3. reference const vector<double>& hw_ref = hw, in which hw is a vecotr of double type. & is called refernce, 其实就是一个别名。 你叫hw_ref 其实就是在hw上做事情。 const 其实是保证只有 reading, 没有writing。 
+	double reference： const vector<double>&hw_ref = hw_ref, 其实就是指向hw 本身。 如果你只有vector<double>&hw_ref = hw_ref， 这个不成立，因为你只能用const 指向const， 不能用普通的指向非const
+		【注意】其实没有所谓的double reference. double reference 就是把一个object 用另一个reference 来指代。 以上说的只是你要是一开始有一个const 的reference, 你再指代这个const reference,你不能用一个普通的reference 来指代
+		￥￥￥【注意】当你的主程序是reference hw时，你在里边的function 可以用copy argument 的形式来copy原来的object。比方说
+				double grade(double mt, double fn, const vector<double>& hw)    //This is a wrapper for grade
+					{ return grade(mt,fn,median(hw));}
+				double median(vector<double> vec)
+		或者，你在function里你可以vector<double>hw_copy = hw,尽管hw 是一个reference. 
+	func(const vector<double>& hw) 对于你只读的vector，string比较有效，因为copy 一个vector，string费时间。
+	对于int，double 等built-in variable，你就可以直接copy 
+	你在call reference 的时候，你不需要&。及func(hw) 而不是func(&hw). 
+		【注意】你在用reference 的时候也是，你直接用hw 就好
+	并且你在call func（something&）时候，你往reference 里边填argument，这个arugment必须不是像 sum/time，或直接return_double()这样的function 等temporary object（因为这个object很快会消失），一定是像vector，string 之类的object。 又称lvalues(左值). Otherwise, the system WON'T DETECT the error during compilation!!
+	【用法】： 你甚至可以std::istream& 来指代cin，这样，你就不用copy整个cin了！
+	【注意】： 你reference declare的时候就要initialize
+	【注意】： reference 不是object，不能有array, pointer, double reference (int && r)之类的！
+	
+	【用法】*(ptr). 和*(ref).一样，都是->
+
+4. overloading: functions with same name, but with different types, and different parameters, then the funcs will be overloaded 
+	￥￥￥【习惯】用这个来做一个wrapper（auxillary function）。 
+	￥￥￥【注意】： 你单单改return type是不够的，比如， int foo(int l) vs double foo(int l),compiler 会说function已经定义。所以，overloading中一个function之可能有一个名字
+
+5. ￥￥￥如果我们要一遍又一遍地call 一个程序来读一个班里同学的成绩，这个程序只读一个人的各科成绩，并且要向主程序反映1. 读入是否成功 2. 将各科成绩存在一个vector里，
+	那么，你可以return istream，（也就是cin），其值是1如果istream输入成功，0则是istream输入失败。 若你在主程序里的istream copy下来的话，istream一旦被读取，那么他的状态也会改变，然后在主程序里，可以if(read_hw(cin,homework))所以你可以把这个istream给copy到这个程序。 
+	￥￥￥【注意】： End-of-file is considered as an error in iostream! 然后返回值便是0.所以你在cin那里一旦有end of file 后，你要cin.clear(). 
+	至于vector，你可以把一个reference传下去。然后直接在上面搞
+
+	istream read_hw(vector<double>& hw,istream& in)		//istream 必须要&
+{
+    if(in) 		//check if in has stuff to read
+    {
+        hw.clear(); // clear the vector if it is not empty.这就是robust code！要想到可能传过来的不是空的 
+        double input = 0;
+        while(in>>input)
+        {
+            hw.push_back(input);
+        }
+        in.clear(); // clear the failure state if encountered，因为你有可能读的数据不是成绩，或者文件成功读到最后了，进而in的值为0，而在主程序会认为数据出了问题。所以我们忽略输入的错误，清除failure state即可
+    }
+    return in;
+}
+	 	
+	
+6. try catch - 若无error，则只有执行try里边的，若有error，则执行catch里的。 所以catch要有error message，并且要return 1. 
+	try{...}catch(the type of error you want to catch){cout<<warning; return 1!!!;}
+	或者try catch(error_type name){cout<<name.what();}.每个domain_error 都有一个.what()来储存其error信息。 
+	这个error往往能够propagate，不过你要想清楚propagate的后果是什么
+	error propagation: function 终止，返回上一层，若无人catch, 则error会一直往下走，知道有一个function 能够catch.不然，它还会再往上走，实在不行就终止function, 并且在屏幕上输出。 
+	
+7. 好习惯： 编写程序时要先想副作用是什么？(cin<<x, 副作用是把值输入x，主作用是return true 来表示cin 已经成功输入某个类型。return false, 没有输入某个类型。)
+
+￥￥￥8. 好习惯：一条语句中只包含一个副作用。反例： 
+	 cout<<"your grade is here: "<<setprecision(3)<<grade(median,hw)<<setprecision(prec)<<endl;
+	 grade的副作用是throw error,一旦error发生, 我们便不想执行这一整个语句。然而，我们还是在外边输出 "your grade is here", 并且precision 也没改回来。所以，先处理数据，再集中输出。 
+
+9. struct: 建立自己的data type，来储存一个学生的信息。
+	因为他是一个data type， 你可以用 vector<data_type> 来储存相关的对象
+	不过你要在sort的时候（比方说一个叫student 的struct 里储存的名字的时候），你要用到sort 的optional argument, 叫predicate。predicate 是一个return bool 的function，作用是告诉sort哪个哪个放在前面哪个就是true。
+		predicate 在被called时候是不是一般没有()
+	记住，这个sort 是在stl库里的<algorithm>里边的。还有一个叫max（a，b）。这个max要求a，b一定是相同type的。所以一旦a，b为vector<struct>::size_type, 你就不能用int 。 
+
+10. setw: manipulator for setting the width of a string on cout. 同时它是短暂的，他只对一个string 管用，所以你不用再设回去。 setw是右对起的。若要左对齐，你要std::left, 如cout<<std::left<<setw(l_d)<<left[i]<<" "<<setw(r_d)<<right[i]<<endl;  
+	cout<<setw(maxlen+1)<<students[i].name; 
+	setw用于ostream上。s.width(n),区别？？
+
+11. 定义： abtraction: hiding details by using class. 
+
+12. Separate compilation
+ 	step 1: functions + their definitions, libraries... everything, in a cpp file. 
+	step 2: include headers and header files in the new cpp file(system header，比如<vector>,不是files, 所以只叫做standard headers)
+	step: 3把function，以及struct的 declaration挪到h file中，注意，在parameter list 里可以只写variable 的type， double func(double)，因为没有function body 这个variable name 也没用。你最后别忘了“；”
+	【注意】： 当parameter有std的成员，比方说std::vector. 用 double func(std::vector<double>)，而不是用using
+		原因是你的header file 可能会被很多个source file 引用，进而如果在header file 中就定义了using：：std，那么他对全局会起一个影响。
+	step3.5: 所有需要的include，都写在.cpp里边。 但是如果.h比方说有vector, 那么要在.h中注上#include <vector>
+		【注意】：在.h里边只注上std::vector,而不要using std::vector,因为我们指向把东西都限定在一个.cpp里边	
+	step4: 在第一，第二行写				// 最好是地一行写，因为有些系统环境一旦没有检测到这个，他们会停止运行
+		#ifndef directive_name_you_define 	//你可能有很多file，检查里边有没有任何header叫这个名字； 这个名字可以任意起，不用跟你文件名一样； #ifndef 是一个preprocessor 
+		#define directive_name_you_define	//在这个程序里define 名字
+		#endif					//最后一行写这个
+	step5:检查你function 在source file的定义与在header 中的declaration， 因为若在source file此处定义一个overloading的话，系统在compile的时候不会报错而是会假定你在其他的source file定义了这个function，但是最终在运行的时候会！！
+	【好习惯】：你应该把overloading的function都定义在同一个文件里，这样便于检查。
+	￥￥￥step 6: compile： g++ main.cpp func.cpp!!
+
+13. inline： 【背景知识】一个完整的function call 会callee give the function control -> cpu find the instruction addresses, puts them on stack -> execute function instructions -> return the values to predesignated memory-> return control to the callee function. 
+	inline function - 【one definition rule】所以你要在h file 中把整个的declaration 都要写出来，不然有可能会有overloading【？？？】
+
+		当你return control to the callee function 相对耗时很长时（你实际function很短），你可以减少这个control 所谓switching time （overhead），因为这些短的程序可能会被经常调用。所以你可以搞inline func(){}... 这个inline是一个request（不是一个command） 给compiler，让compiler把整个程序copy到callee里边。 
+
+	 	
+
+14. return: 你可以直接return ()?a:b
+
+15. int 的除法问题： -1/2 =0, 3/2 = 1; 变号分析即可 
+
+
+
+
+--------------------------------------chap5 Sequential Containers, analyzing strings -------------------------------------------------------------------
+1.【好习惯】：creating 2 vectors and copy them is not a good idea, because it will take much space
+
+2. vector 其实已经被optimized to fast access, 你在最后加元素，也只是o(n)，不过你在中间insert or remove, 你就要动后边的index。  .erase()实际上比较慢，首先，.erase()要的是一个object，而不是一个index，因为有些containers 没有index. 然后，它在抹去一个object之后，他会把后面的都copy到前面来，这样他就是n^2的complexity
+	【重要注意】：你会事先存好vec.end()吗？诚然你想avoid time complexity o(1)，你不用每次都evaluate，但是你的vec.end()是都在变的！所以你依然需要这个。 你要不停的去查.size(),不过这个相对较快. 
+	【注意】：erase（）会invalidate最后一个element 之后的iterator，不过，同时erase(item)会return一个item之后的iterator
+		
+3. 如果我们只需要sequentially access 一个container，那么我们就不需要index，比如用list，还可以用iterator去，这样erase的时候也就不那么痛苦了
+	a. iterator是一个value。 你可以iter1>iter2 来比较！
+	b. 2种iterator，一种是const_iterator(不会改变这个iterator指代的东西), iterator. iterator 可以转化成const_iterator, 但是反向的转化是无法实现的。比方说，vec.begin()是iterator, 但是你可以将其设为const_iterator. 
+	【注意】：当你有一个const vector<T>& 时，你需要const vector<T>::const_iterator. 普通的iterator 不可以！
+	c. const_iterator can be compared: while(it != vec.end()), vec.end()是vec最后一个element之后的假想元素
+	d. dereference: *(it), 来搞到it 指代的元素，这个元素是个lvalue,即non-tenmporary object。 *（it）.name 则是其中叫.name 的元素。 因为这个非常常用，你可以用it->name来指代。 
+	e. stduents.erase(students.begin()+i) 是random access, 因为i 可以是random. 在不支持random access 的container 里，你只能用iterator, 而不能用Index。不过，如果你的container支持indexing, 其实你也可以iterator--，iterator + a.size()【MIND BLOWING！】, 或者iterator[-1](iterator之前的那个Item),iterator[0]就是其本身！也用indexing！
+	f. list 只是不能用index吗？ 
+		对的,list储存在non-contiguous memory 里边。vector 储存在contiguous memory. 连带的正常的sort, partition 等需要Index的function 也不能用了
+
+4.using list: (感觉就是linked list??).。它和vector 类似，是template，所以，你要告诉什么类型. syntax 为： list<double> ls    
+	【非常重要】list.sort(),而不是sort(ls.begin(),ls.end()), 因为ls不是random access, 所以你没法一下子划定范围。你需要用ls.sort(compare)来sort！All sort algorithms are nlog(n) time complexity;
+	list vs vector: list 对较少input 比较慢。vector相对较快。但是input 一多，vector 很有可能就变得很慢。
+
+5. string, 其实像vector, 
+	你可以搞isspace（char）, “c” is a char. you can put one letter of a string in here. 这是一个predicate. 告诉你一个char 是不是space。 这个属于<cctype>
+
+6. substr(starting_index i, length j-i). 所以区间[i,j)
+	str = string.substr(i,j-i)
+
+7. getline(cin,s), reading a whole line (i.e, ignore the whitespaces), input cin into s and return cin. 
+	【注意】，单独的getline(cin,s)遇到空格便返回true， 所以while(getline(cin,s))遇到空格后会一直读下去，但是遇到ctrl+d, 这个便返回一个false
+	如果你前面cin>> (extraction operator)，并且以\n结尾，那么你getline 之前必须要cin.ignore来discard \n
+
+8. s1 +=s2， s1的值被s1+s2取代了
+
+￥￥￥8. vertical Concatination of vectors: top_vec.insert(top_vec1.end(),bottom_vec.begin(),bottom_vec.end())等于你
+	for(auto i = bottom_vec.begin();i!=bottom_vec.end();++i){
+		top_vec1.push_back(*i);	
+	}
+
+
+9. 能用local Variable 的，就不要用global. 
+
+10. sequential container 的共同的性质： (vector, string)
+	a. Iterator:
+		container<T>::const_iterator
+		container<T>::iterator
+		c.rbegin() c.rend()		//反着来。这个是个std::reverse_iterator. 并且他无法与std::iterator 之间转化！
+	b. Initialize		（vector最强大）
+		container<T>c (c2)		//若c2given，c就是c2 的一个copy		
+		container<T>c (n)		//n个元素，但是initialization 要看type而定。algebraic type 的一律initialize 为0. 非algebraic的？？？？？
+		container<T>{m}			// 1个元素，m. 这个是通用的！
+		container<T>c (n,t)		//创造c，里边有n个元素，每个元素都是t 的复制
+		container<T>c (b,e)		//复制[iterator b, iterator e)
+		c1 = c2				//replace all c1 elements with c2 elements
+	
+	c. Operations
+		c.size()			//useful in accessing the last element in string, better than strlen()
+		c.empty()			//在vector中，.empty()更有效率！
+	d. Insertion
+		c.insert()			
+		c.insert(d,b,e)			//在iterator d处，插入[iterator_b,iterator_e).
+		c.push_back(t)			//将value t push back
+		
+	e.erase
+		c.erase(i)			//删除iterator i
+		c.erase(b,e)			//删除[b,e), half-open range（这个是stl的风格，这是因为for(i!=end)），这个对list来说比较快，但是对vector和string来说比较慢，同时，在被删除的item之后的iterator都是invalidated!!
+
+	f. Access
+		c[n]
+
+￥￥￥11. vec.reserve: 	 vector dynamically allocates contiguous memory. when memory goes out, they have to find a larger contiguous memory, and copy the values to the new memory slot. THIS IS EXPENSEIVE！！ so, you can reserve a slot of memory, and that memory will not be initialized. (size 与 capacity 的关系，即capacity 是当前的memory slot 能储存的最大的值)
+			 同时，reserve能省下一些时间，何乐而不为？
+
+12. vec.resize(n2):	vec.size()= n1, 若n2>n1, 新加的elements initialized 为0； 若n2<n1, elements被砍掉。 
+			vec.resize(n2,value), 新加的elements 被initialize 为value
+
+
+13. 【信息】： cctype 里边有manipulate character 的工具，比方说 toupper, tolower, isalpha等等
+
+￥￥￥14. segmentation fault: read/access a read-only or freed memory 
+	常见情况： 没有return; output iterator 设的不对，比方说应该是back_inserter； array 超过boundary
+
+￥￥￥15. string 要 string c(n,'a')而不是string(n,"a")!
+	string(i,j), i, j 为iterator, 并且copy[i,j)
+	【习惯】： container_type(i,j)这个通用？？？ 如string(i,j)
+
+16. ￥￥￥【教训】：不要compare rbegin (reverse iterator) to a regular iterator
+
+17. 【简便写法】: vector a = {1,2,3}, b={4,5,6}
+ 
+18. 
+
+
+--------------------------------------chap6 Using library -------------------------------------------------------------------
+1. 接口 - Interface， 比方说iterator都有不同container 的配套版本。这个接口便是一个函数的集合，体现了一致性。
+
+2. right associative and precedence: *, ++ 有相同的precedence, 并且是相同的precedence. 这样，他们应该从右向左走。比方说*a++=*b++
+这个是 *(a++) = *(b++) 而 a++ 先return, 再evaluate。 所以: *a = *b; ++a;++b; 
+
+3. generic algorithm: not specific to a type, they will infer from the container type. 
+	copy(copied_range_start_itertator, end iterator, destination iterator)
+			destination iterator doesn't have to be the same as start_iterator.so you can copy the value of a vector to a list
+		copy(container.begin(),container.end(),back_inserter(ret))，back_inserter(ret)返回的是ret的最后一个元素的iterator
+			can I use ret.rbegin()???不过，你肯定无法用ret.end()
+		copy 的机理: a = begin; while(a!=container.end()){ *(ret.rbegin()++) = *(a++); }
+	*back_inserter 是不可以的！！因为他是Output iterator
+	library functions 会handle empty ranges 的！
+
+
+4. Calling overloaded predicate:
+￥￥￥	isspace(char) is overloaded by isspace(w_char), which is for reading Japanese characters in STL. 而因为我们在call predicate的时候，我们不会有(). 所以我们无法告诉caller, 哪个version我们要call. 所以，我们要做个wrapper,又称auxilary function.
+	find_if(i,str.end(),isspace): 从i 到str.end(),我们寻找符合isspace 的item，并且return那个iterator。如果找不到，就return str.end(). 
+	【注意】如果你要find_if(str.begin(),str.end()), you will always get the first item!! you don't get the items you want sequentially. 
+	【经验】： 在predicate use overloading function, you will see "expression cannot be used as a function"
+	【经验】： find_if can be used instead of the for loop!!!
+
+￥￥￥5.  equal(s1.begin(),s1.end(),s2.begin()), equal 假设两个sequence有相似的长度，并且比较两个sequence是否相等。
+	【注意】如果s2.begin 设成s1.rbegin(), 那么这个sequence会从后往前走
+
+6. static: 在第一个function 第一次被call的时候创立，它的值会保持到下一个function call
+	叫storage class specifier. 
+
+7. alphanumeric: letters and numbers. isalnum(char)
+
+8. find_if and find: 
+	find(s.begin(), s.end(),char). 
+		这个find returns the iterator of the char. 不然，，return s.end()
+	find_if(s.begin(),s.end(),predicate)
+		find_if returns the iterator for the item that satisfies the predicate. 
+	【注意】： predicate cannot be !something. it has to be something
+
+9. delimit: 将长度限制在某区间内。
+
+10. search(i,e,to_be_searched.begin(),to_be_searched.end())
+	search vs find: find(a,b,val)， 想想*itr 能不能直接等于val. 比方说 string str = "abc"; a = str.begin(); val="ab"; 这就不可以。 
+
+11. 【习惯】: while (func()==something): 不停地执行func,evaluate.  
+
+12. Passing a function as a parameter: mom_func(double son_func(int)); double son(int param){}
+	注意，你要把son里面的int param 换成int. 不然可能会失去普适性????
+	in main(), 你做mom_func(son);
+
+13. transform (s1.begin(),s1.end(),to_append_iterator,func): 这个时在s1中iterate, 把每个iterator。 【练】！
+
+14. accumulate （s1.begin(),s2.end(),initial_val）. 这个是intial_val (0.0 而不是0,不然这是一个int!!)+ sum of all items in s1! 这个func在numeric 中
+	accumulate(s1.begin(),s2.end,0LL) each L is to force a long int to it! long is 32 bits, if you want to do sum on long int, you might consider LL, which is 64 bits!
+
+15. remove(s1.begin,s1.end(),target_value), 找到target_value 并copy到s1的前部。之后的就不管了。 如果你的input sequence 是个const &, 你要用
+remove_if(s1.begin(),s2.end(),predicate): 将符合Predicate 的按次序被不符合的item 替换掉。最后return 一个iterator,指向替换过后的vector 的最后一个element再往后一个。 其实只有替换，没有删除。所以，你可以用erase把return的iterator之后删除。		remove_copy(s1.begin(),s1.end(),to_append_iterator,target value), 这样你的iterator 就会append 上去, 但他本身不会remove 原方程的item!
+remove_copy_if(s1.begin(),s1.end(),to_append_itr,predicate)
+ 【注意】： copy_if 是符合Predicate 的！
+
+
+16. 
+partition(s1.begin(),s1.end(),predicate): 把所有符合predicate的归在前半部，不符合的归在后半部，但是顺序可能打乱		【练】！
+stable_partition(s1.begin(),s1.end(),predicate): 不打乱顺序的partition
+	并且return 一个iterator pointing to the first element of the second section. 
+
+17 【概念】： 有两种container 的function：
+		1. 只是作用于container element，（改变顺序）而不改变size等container properties, 比如说sort,partition, remove等。不过，你一旦应用了这些function, 你的iterator也就不能用了。 你若要改变长度，你必须要自己用vector.erase. 
+		2. 改变length 的，比方说insert 和erase. 注意，插入后的iterator 都不能用了！！！这些都是一个vector.erase, vector.insert
+
+18. 【小技巧】： (?():())其实是一个返回的value!
+
+19. 还有一个很重要的技巧是pass iterator to a func. 
+
+
+
+--------------------------------------chap7 associative container  --------------------------------------------------------------
+1. associative 叫关联容器。map, 就是将index 与value 关联在一起的。这样，你在检索的时候就可以根据value来检索。这个值不一定是int, double 哦，而是可以为string等我们可以比较value的type. 
+
+所以一个container 的顺序你不能改变，所以你无法用sort, remove, remove_if, partition等function. 
+
+2. map<string,int> lol 这个叫from string to int map. string相当于index（key），int 是value。 这个key-value 叫做一个Pair，是一个datatype. pair 定义在comapnion library????这个key 是一个const K type，所以他是不会变的。和map 相似， pair<K,v> 也是这么定义的，不过他只是单纯的一个数组。 
+
+	map<string,int> lol(cmp), cmp 是一个predicate，用来determine order of elements. true for <.
+	【注意】：map<string vector<int> > 这个> 中间要隔开，不然他是>>!
+	【注意】：　map 不能是const!
+
+4. lol[s]也可以用在map上。这里s便是string 了。 
+	a. 【注意】不过，当这个s不存在的时候，map会自动生成lol[s].所以不推荐检索的时候也用这个！况且，如果lol是const map 的话，const 不允许你用[s]!!那么你用什么？ 你用lol.find(s)。这个会return给你一个iterator, 如果没有找到的话，他给你返回map.end(). 
+		map的iterator，要用-> first (key), -> second 来表达！！若你用map[], 则不用->
+	b. 鉴于map[s]会自动default initialize 一个值，若map[s]不存在，那么不要把map 设置成const。 
+		
+
+4.5 map.insert(std::make_pair(K,V))与lol[s]区别： map.insert如果发现K 已经存在了，那么他不会插入，并且return false!
+
+5. Associative container 比大多数数据结构要快，他利用了self-adjusting balanced tree. 检索时间是lg(n). 
+但是它比hash table 要慢， 不过hash table 需要用户自己来提供hash function, 并且无法按照顺序来检索。用hash table 来做associative container 比较困难。 
+
+6. Passing function as argument and having efault argument：func( double another_func = func2)
+
+7. pseudo-random: 
+	rand() 是[0,RAND_MAX]，两个在<cstdlib>中define. 如果你要generate [0,n）的话，那么你会不会选择rand%(n)呢？ 其实不要这么做。 
+	1. 当n 比较小时，比方说n=2）,那么最后很有可能是0,1 alternate  的。 
+	2. 还有，比如RAND_MAX为32768，假如n = 20000， 那么[0,12768]的数可以被两个rand 值产生。 而剩下[12768,20000)只有一个数相对应。 
+所以，你可以: int r, bin_size; bin_size = RAND_MAX/n; do r = rand()/bin_size; while(r>=n); (discard 那些最靠近RAND_MAX的数)
+
+8. map::empty
+
+9. 【编程经验】： map 最好不要做random iterator. 
+10.【编程经验】： 一层一层从上往下做，一层一个模块一个模块地测试。
+
+11.map.find(key_val), and this returns map.end if nothing is found.
+
+12. 【编程经验】:　split_category(line,entry);     // 建议写entry = split_category(line)，　更直观。　
+
+13.   loop thru the whole map.   
+	for(auto i = look_up.begin();i!=look_up.end();++i)
+        cout<<i->first<<" appears: "<<i->second<<" times"<<endl;
+
+14. iter i = search(++b,e,mark.begin(),mark.end()); //i cannot be the first element. search for certain item 
+	
+--------------------------------------chap8 generic functions  --------------------------------------------------------------
+1. what is generic function?
+	templates that work for many different types, things in common. 
+	template<class T>, 这个是在STL 里的，并且是stl 的基石。　
+【细节】：这个Ｔ一般是到compilation 的时候bind　到相应的type, 程序一般是 edit -> compile -> link, compile的时候会instantiate.这个时候如果有的functions 没法ｗｏｒｋ，比方说string/2这种错误，他会在Ｌｉｎｋ的时候检查出来。（ｌｉｎｋ时出现ｃｏｍｐｉｌｅ的错误）.这个时候，所有用到的type 都会被带入，并被instantiate. 
+【注意】：　要把template 的definition直接写到h file 里，或者通过在h file include。　因为绝大多数implementation 都需要declaration 和definition. 所以，1. 你可以把template function 就全部卸载h file 里 
+	【注意】：template declaration 不能在一个function里！
+
+【心得】： 有时recursive 更好，更简洁！
+
+基本格式： template <class T,class V> T find_algo(T beg, T end, V val)
+
+￥￥￥２．typename vector<T>::size_type, 只要你需要用到一个depend on T 的member，你在前面一定要有typename 才可以，
+
+3. type conversion: 知道你的function具体怎么work的！有些function 还好，比方说ｃｏｍｐａｒｅ 0 and 0.0 是一样的，但是有的，比方说max(a,b), 你ｔｙｐｅ不一致ｃｏｍｐｉｌｅｒ就无法infer了
+
+4. iterator access： 
+	a.一共有5种iterator, 因为每种iterator的container不一样，有的需要random acccess, 有的是single pass 比如sort，他需要algorithmic operation, 需要random access。而find则是sequential， 所以它支持所有的iterator。
+	
+	single pass: input iterator (istream::iterator) is a single pass because you can never visit the item passed in any way.
+	multi pass: forward iterator 尽管只能往前走，但是你可以通过多做一个forward iterator 来往前，这样你就能读第一个iterator 读不到的了。 
+
+所有stl container 都支持iterator, 所有Iterator++都代表下一个。 
+
+【心得】：所以，我们需要理解每种iterator都有哪些特性，并且algorithm需要什么类型的iterator！！
+
+5. find(s.begin(),s.end(), val) 为什么不是find(c,val)? 因为这样你无法search 一个range, 并且，你无法用s.rbegin()，s.rend()来表示reverse search。 
+为什么不是s.find(val)? 因为这样stl需要给每一个container 都定义一个find。 而有了两个iterator，你就可以用template了！
+
+￥￥￥6. Input Iterators:  
+	a. support *(), *().,++, !=, == Because with all these, you can read from a container sequentially
+	b. istream_iterator 是一种input iterator的template， 定义于<iterator>. 而template 一定要有type。比方说你可以read int from cin and append that to a vector<int>. 
+￥￥￥	c. istream_iterator<int>(cin)将这种istream_iterator bound 到cin 上。 cin 是一个istream 的object, 储存一个输入值后，将其写入一个value中。 这么写是c++ 网站给的constructor。 ++iterator则是读取下一个值。	istream_iterator<int> 则是一个指向end of file 的iterator。 
+  	d. copy(istream_iterator<int>(cin), istream_iterator<int>(),back_inserter(v));
+	e. istream_iterator<int>()是一个default value如果end-of-file 或者space，"one past the end" empty value. 
+		
+
+7. Output iterators: 
+	a. write once: 一个iterator, 必须要把所有element都照顾到（中间不能跳），并且只写一遍。你的program必须保证这一点。比方说back_inserter, #include<iterator> 就是产生是这样一个指向最后一个element的插入output iterator。 不过程序还有其他的operations所以不受此限制. 【注意】如果你弄了一个固定的iterator, 比方说a.begin(), 这个无法Increment，所以他不是output iterator
+	b. ostream_iterator<int>(cout, " ") 
+	c. copy(s.begin(),s.end(),ostream_iterator<int>(cout, " ") )【注意】：input，output iterator你都需要告诉他们什么type。 这样，你就把iterator link 到cout上面了。 “  ”是添加的空格,不然，每个element 之间没有空格。 这样，你就可以cout了。 
+	
+	
+ 	
+8. forward iterator: ++i, i++ but no i--,--i; *i; it==j,it!=j; it->member. it doesnt need to meet the write once requirement of output iterators. So it can write, then read or change the iterator. This is also a valid output iterator????
+	read+ write access!
+
+9. Bi-derictional iterators: forward iterator 支持--。 所有STL container 的 iterator都是bi-derictional 
+
+10. Random Access: it1+it2. List doesn't support this coz it's optimized for fast insertion/deletion. list supports only bi-directional. 
+
+11. 【心得】： 程序最好不要见一个特殊情况就补一个特殊情况，一定要有较高的普适性！比方说.end() 是最后一个element之后的虚拟element。为什么？因为不然你需要讨论最后一个的情况；并且如果container 是空的，那么你这个最后一个element就不存在了！并且你可以看这个container是不是空的， by beg==end； 表示failure
+
+12. 【新习惯】 iterators for flexibility: 只要你需要的operator 只用write, 你可用Output Iterator (ostrean_iterator), Forward iterator (back_inserter), Bi-directional and random access! 只要你的iterator 支持Operation，你就可以用这个iterator。这便是data structure independence!最大的贡献。 
+
+13. template functions: template<class T> T zero()
+	a. 这个时候你在用的时候必须clearly define the return type. 如double a = zero();
+	b. function每一个被call 的type 都会被Instantiate
+	c. 当template function 当做function pointer 时，你必须要instantiate template, 也就是specify T！
+
+
+14. 【特殊】在copy 这个func中， *cout_itr++ = *cin_itr++; 对一般的container 适用（即*cout_itr = *cin_itr; ++cout_itr; ++cin_itr;）但是，对cin, cout不适用！
+	注：cin_itr++就是cin 等待输入下一个值。 cout_itr++ 则是输出cout buffer里现有的值。一开始istream_iterator<int> cin_itr = istream_iterator<int>(cin) 的时候会为了initialize而县等待输入cin 得值。
+	所以，*cout = *cin (cin 将值存入cout buffer); cin++(cin等待并存入下一个值); cout++（cout flush buffer）;
+
+
+15. back_inserter and push_back
+template<typename Container> class back_insert_iterator
+{
+	public: explicit back_insert_iterator(Container& c): container(c);	//所以只能back_insert_iterator(vec);
+
+【注意】	back_insert_iterator& operator= (typename container::const_reference val)
+		{this->push_back(val);	// push_back 有可能会resize 哦，比方说vector 会double size。 
+		return *this;		// operator 都会return 一个东西作为convenstion，就像back_insert_iterator.operator=(val); 
+		}	//1. we want an individual element of a container. const_reference is actually the element type of a container. 2. typename is required for types that is defined as part of Container. 
+		
+		back_insert_iterator& operator* {return *this;} 		//return the back_insert_iterator 这个object
+}
+
+	template <typename T1, typenameT2> T copy(T in, T out, T destination)	//why not just one T? 因为你有可能有两种iterator。 
+	{
+		while(in!=out)
+			{*destination++ = *in++;}
+	return destination;
+	}
+
+所以在 copy(vec.begin(), vec.end(),back_inserter(lol))中， 首先是back_inserter constructor with lol; 其次，在copy中， *back_inserter 直接返回一个object； 之后用overloaded = 来pushback。 
+
+--------------------------------------chap9 Class  --------------------------------------------------------------
+1. abstraction
+	a. 因为struct 没有隐私性，programmers must manipulate data members directly. with Class, you just need functions to change data members. 但是我们还是保留了struct, 用来做all public 的这样的data type。 
+
+	b. 【注意】： 你要在h file 中declare your class, but make sure you do std::vector 而不是 using namespace std!
+
+2.member function
+	你在source file 定义： istream& student::read_grades(std::istream& in)
+	【注意】如果你要引用class 外的一个function，你要 T::lol{::func();}. 如果没有：：，那么compiler就会认为你在call　class 里边的function. 
+
+3. 	
+ const memeber function
+	declaration： class t{double foo() const{}}。 注意你在parameter list ()之后有个const. 其用意等于 double foo(const T&), 就是不改变这个object 本身。不过你在这样的parameter list里，这个object是隐含的。 所以你不必Pass 这样的一个object. 不然你根本无法告诉compiler 你要做的是const
+	【注意】： foo 不能改变class 其他的值。比方说read某个input
+	【注意】： 当外边的一个external_func(const T) 时，你只能而过用const memeber functions.
+
+4.【经验】:undefined reference to something: 1. 你搜遍了整个library，但是你还是找不到。一般来讲，你有可能忘记compile某个东西了。2.或者是你有template class，但是你的member function 没有定义在class definition 里，所以有linking error， 解法：只要吧member function 移到h file 即可，可以在外边也可以在里边。 3. undefined reference to `vtable for grad： 你有个virtual function declare 了，但是没有definition。 
+
+4.1【经验】: redefinition of a function:  不要在h file 里define function！
+
+4.5. 【经验】: undeclared function: 1. 你function 可能declare 了，但是位置应该提前，这样caller 才能找到。 
+
+
+5. Include“relative position, use the same Linux convention”
+
+6. constructor & initialization
+	a. const, & need to be initialized right on the spot
+	d. 当你的class有自己的constructor的时候，constructor便可以initialize. string是可以的
+	e.【惊】： 你可以有多个versions of constructor来做overloading. 
+		【习惯】default initializer: 保证每一个data memeber properly initialized. 所以你应该一直有这样的一个default initialzer, 并且在initializer list!!!
+			allocate memory to hold object --> initialize the object based on initializer list(每一个variable 都会被initialize 哦) --> execute the constructor body （你再assign values to the variables. ）. 
+		【习惯】如果你有data memeber depends on other，你最好实在constructor body 里边Initialize，而不是在constructor list。因为initialization 顺序是你在function declaration里边的顺序。所以这样做可以先Initialize那些独立的variable, 就不用收到这个顺序的束缚了。 ???
+
+7. 好习惯：　为了testing 的方便，我们可以在pass ostream& to function. 这样你就可以在cout 或者fout 上output了。因为你既可以用cout, 也可以用 ofstream。 
+
+￥￥￥8. memeber function inline: 
+you put the definition in function declaration in hfile!	
+
+9. 【经验】： 一个很常见的错误是，把可能变化的variable当做const,或者const 当做普通variable！eg: functions using sort; 某个会变的值当做const；某个上一个函数定义的const,你把他变了。所以，除非很确定你要const,不然不要轻易用const！
+
+10.【技巧】：如果需要pass function as a parameter to another function, 你需要保证这个function 没有overloading. 你可以做一个WRAPPER。不然，你会看到something like "cannot be used as expression"
+【技巧】：如果你无法直接manipulate 一个reference, 比如transform(a.begin(),a.end(),back_inserter(c),some_func)， 你可以把some_func做成一个wrapper, 然后进行manipulate。 
+
+11. 【注意】cout<<func(), 如果func里边又输出东西的话，也是可以的！
+	
+
+--------------------------------------chap10 memory --------------------------------------------------------------
+1. Null Pointer
+	converted from int 0. Because a. converted ptr is distinct from ptr to anything else b. 0 is the only int that can be converted. 
+
+2. int* is called "ptr to int" int *p is "*p" is an int. 但是这两者是等价的。 中间的space 没有任何作用
+	【注意】： Int* p, q 与 int *p, q 也是等价的。 都是: int* p, int q的意思。 
+
+3. pointer 类似于iterator pointing to a container with only 1 object. 因为她本身是random_access iterator, (*,++, random access, read&write)
+
+4. function pointer:  SNEAKY!
+	
+￥￥￥	a. declaration: int (*fp)(int) 指向一个int a(int){}。 你用 int(*fp)int = split; 来表示fp 指向split 这个function. 
+
+￥￥￥	b. 一个function　当被当做parameter 来传递的到function，其自动变为function pointer. 因为ｆｕｎｃｔｉｏｎ不可能被复制（call by value）,　所以只能直接被ｃａｌｌ或者地址拿来放到ｐｔｒ里。你在function body里call他的时候，你也是直接call的他的ptr。不过c++自动dereference。 所以，你不需要*来表示pointer,&获取function地址或dereference，因此： 若int a(int){},则fp = &a 等价于 fp = a, *fp(i) 等价于fp(i). 
+		
+	c.【特殊情况】【RARE】【记住】： a function pointer as a return type， 我们要explicitly state the *. 语法是： typedef double (*func_ptr_ret) (parameter list); func_ptr_ret func(){} 其interpretation是： 定义 double * (parameter list)为func_ptr_ret, 而这个pointer指向的是double some_func(parameter_list)。之后的func(){}就是有这样的一个return type的。
+	
+￥￥￥	d. 例： template<class T, class pred> find_if(T begin()，T end(),pred f) {f(*begin)} ， 而我们call find_if 时是find_if(a.begin(), b.end(), isspace）. 所以pred 并不是一个特定的type的 function ptr，只要f(*begin)有意义就好了。 
+
+4.5 Functor: 
+	 this is an object. 想想一下如果你要一个predicate, 或者在transform()里边要做个function， 但是你只能有一个argument. 怎么办呢？
+你可以有一个functor class， 这个functor 就像一个function一样。 要有constructor + overloaded (). 
+	class functor{int argument1, argument2; functor (int a,int b): argument1(a),argument2(b); bool operator() (int r){return...}}
+
+
+5. Array： 是core language 一部分，而不是STL, 所以他不是class type, 像vector，所以他没有member， 比方说size_type. 不过， 你可以用c++ 的<cstddef>中的size_t 来表示size，这是一个足够大的unsigned char. 
+
+	a. arr[0] 即arr. *(arr+i) = arr[i]. 这个更是pointer 的一个推论， 而不是array 本身的性质。 
+
+￥￥￥	b. 若arr[10]本身不存在 (out of bounds)，那么你依然可以access这个memory allocation, 像iterator一样可以做比较，甚至可以读出本身的garbage value， 不过你不可以往上面写，不然就是segmentation fault （crash）
+
+	c. size_t vs ptrdiff_t, 相同点： a. 两个都可以用来表示Pointer arrithmatic， p+q,等，b. 并且足够大（long 的size， 所以这个比int好）， 并且都在<cstddef>中。不同点： ptrdiff_t 是signed，可以用来表示负数，但是sign_t不是。 
+
+￥￥￥	d. array to vector: vector<double> v(arr,arr+size) 从第一个到One past last element。 因为这实际上是copy. 
+
+
+6. String Literals and char array[]
+	a. string literal 就是 const char *s = " ... ", 由“ ”括起来，并且自动append '\n'.等价于 const char[] = {'H','e','\0'}。  不好之处： 1. C++ 规定这个必须是const, 所以他不能变！  2. size 必须仰赖strlen, 即while(*p++ != '\0') ++size； 。所以一个const char* "this is a string" 本身就是一个Pointer指代const char[]. 
+
+	b. string literal 在<cstring> 里定义。 
+
+￥￥￥	c. std::string::c_str() 其实就是一个char array。 它是由contiguous memory 组成的。 我们认为std::string 与const char【】等价，所以你可以读string.c_str(),但是你没法做 string.c_str() = something; 
+		0. string a = char_array; 
+		1. 所以std::string str(char_array)， 就是可以直接吧char array 第一个element 的pointer 放到string 里边，这样可以copy， 
+		2. std::string str(char_array, char_array+strlen(char_array)) 是从第一个pointer到one past last element pointer 的复制，因为pointer 本身就是iterator。 
+
+7. Passing strings to a c++ function: 
+￥￥￥	a. 1. 你可以在command line 那里给这个程序string arguments. 
+		
+		int main(int argc,char**argv)		//【注意】，这个是个double char array. 
+{
+    cout<<"argc is "<< argc<<endl;
+    cout<<"argv is ";
+    for (int i = 0; i<argc;++i)
+    {
+        cout<<argv[i]<<" ";		
+    }
+
+    return 0;
+}
+	你在call 他的时候，也是func_name string_1, string_2... ，Implementation 会自动数出string的个数，包括program的名字
+
+	c. argc， argv是convention，不过你可以随意命名
+
+8. Error msgs
+	a. cerr vs clog:  cerr is like cout, outputs things when the system thinks it's appropriate. clog is it outputs charactes right away. lots of overlead. standard logging system.
+
+	b. they are included as std::cerr. 也是在<iostream>里边的
+
+9. ifstream, ofstream:
+	a. they are a type of istream, ostream defined in <fstream>. therefore, wherever you need istream and ostream,you can put ifstream and ofstream. 
+
+	b. ifstream, ofstream需要一个const char* 来做为input argument 
+		ifstream in("file_name"), "file_name"本身就是一个const char*. 或者你把"file_name" 存在string里，然后ifstream in(string.c_str())。 你若要读一个文件，你可以if(in){while (getline(in,s)) cout<<s<<endl;}。
+		1.  你之所以用if(in)，或者in>>s，或者getline(in,s), 是因为in 一定会确保不是eof之后才会return true，而你用in.eof()则是你要自己先手动read，才能return。 所以if(in)更好。 
+		2. 如果你不用getline 的话，那么in>>s 只会读第一个空格之前的东西。
+		3. pass 到一个function里边，ifstream 也必须要ifstream&!!	
+
+	c. 如果in("file_name")不存在，则返回false.你可以 if(in) 来进行判断
+	
+	d. int main return 0 by convention 代表成功返回， 你可以返回其他值，来代表返回失败。   
+
+￥￥￥	e. 往output file 里面写，你可以out<<string. 程序结束后自动保存。 注意，这样做是overwrite!!
+
+10. Memory management
+	a. automatic: local variables, and the memory is automatically deallocated at the end of function scope
+		【注意】： int* func(){int i; return &i} 这个很要命，因为他确实compile，但是你搞出来的pointer 指向的是虚的！
+	b. static: 只有一个copy， 并且在你一开始Initialize的时候就有了。 
+	c. dynamic: 用new, delete. 
+		1. new 本身return 一个pointer.这个Pointer其实是一个copy，你可以Initialize一个pointer 指向一个值： int *p = new int(100); 
+￥￥￥		2. delete应该用在new, null 上面， free()用在&variable 和malloc 上面。 比如 int x = 5 实在stack 上面？？？， int *ptr = &x; 就只能用free 而不是delete. delete 是的作用对象是ptr ， 即object 的address。 【注意】： delete 一个null ptr 是可以的！！
+		3.new T[10] 实际上default initialize 一个type T的 array。 如果T 是built-in type，则default initialization = no initialization； 如果T是class type，则这个是constructor initialization。 
+		【注意】： new T[0]是给一个off-the-end Pointer, 这样你也可以delete.
+		【注意】： delete[] 表示删除这个array。 他会从后往前删除这个array. 
+		【注意】： stack and heap. stack stores pointer（stack 本身储存contiguous memory）, access 非常快, 并且function scope 一道就消失了。 heap 储存dynamic memory（因为heap本身是储存non-contiguous的）, 比如pointer 指向的object, 并且不会因为function scope 消失而消失。 
+		【注意】： new 会自动根据constructor 来initialize。 有的compiler 会自动Initialize new int[10]， 但是不要依赖于这个feature, 有的不可以！
+
+11.【经验】编程思路： 想想用户需要那这个东西做什么？　把主要的algorithm 框图确定下来 --》 functionalities --》 data structure, implementation of the main program 
+--》error, exception 应对
+		
+
+		
+
+	 
+--------------------------------------chap11　Defining abstract data type --------------------------------------------------------------
+1. 我们要control what happens when we copy, assign and destroy an object. 所以拿vector 举例：　
+	a. 想想用户需要哪些功能？　vec, vec(n,val),vec[n];iterator, ++i, random access; .begin(), .end().　所以在implement 的时候，你要把这些放到member function中。 因为你要有不同的type，你需要用template class
+		template<class T> class vec{public: this is an interface; private: }
+	
+	b.我们有两套member: 一种管memory allocation, 另一种是Interface。 dynamically allocated memory: 你需要一个dynamically allocated array, 需要.begin() ptr, 和size 或者.end()， 并且我们需要allocate, deallocate memory.进而
+		private: T* begin; T* end; mem_alloc(); de_alloc(); 
+
+	c. public: read the user's requests and read the pointers. Then change the values accordingly. 
+
+	d. construtor: 因为我们有三种declare 的方式（见a）， 所以我们也需要三种constructor. 如果我们用create 来创造pointers, 
+		第一个： public: vec(){create();}, create 在这里应该创造两个null pointers， 也就是 begin = 0, end = 0.  
+		第二,三个： public： explicit vec(size_type n, const T& = T()). 首先，initializer (size_type n, const T& = T())有两个param, 第二个param是有default value 的 （T的constructor会被调用来Initialize vec【n】）。所以只有第一个param 需要用户initialize。 【知识点】： 在c++ 中，如果一个constructor只有一个param 需要被initialize，那么这个constructor就可以有type conversion 的功能， 即 	
+			class foo
+			{
+			private: int num,num2;
+			public:
+			    foo(int n,int m=20):num(n),num2(m){}
+			};
+
+			int main(int argc,char**argv)
+			{
+			    foo bar = 3;}
+
+		但是你要有explicit，即explicit foo(int n,int m=20):num(n),num2(m){}，那么这种type conversion 就被禁止了，你只能有foo bar(3) 而不是foo bar = 3; 
+			【注意】： explicit 只能用在class definition 里面。
+		
+		constructor: recursive construc. 就是一层一层的construct. 
+	
+ 	
+	e. Define facilities: 你现在需要定义iterator 和size_type.用typedef 来定义比较清楚，并且以后改的时候也不费劲。 
+		iterator: 比如一个list, 他是一个linked list, 有一个node，指向前一个和后一个的pointer。所以，你的iterator应该包括node，和两个pointer。 所以iterator 自己应该是个class type. 像vector的本质是个array。 而array 的iterator就是pointer。 并且你有full random access. 
+		size_type: 用size_t 就已经足够大了。 所以用这个来表示。
+		code: typedef   
+
+	f. Define [] and size(). 	
+		size： return 两个Iterator 之差，其类型为size_t. 但是注意，有const vec 和regular vec,所以你有个const member function 没坏处！【注意】： const memeber function的写法. 	
+		[]是个operator. 所以你用operator来做。 operator+symbol --> operator[]. 然后你给他return的应该是一个reference to an element，这样你就不用copy了，省时间。 同时，你要知道一种是const vector， 另一种是普通的vector。 所以我们在[]上需要overload operator。 
+		code:
+			    size_type size() const {return end-begin;}
+			    T& operator[] (size_type n){return begin[n];}	//or *(begin+n). 
+			    const T& operator[](size_type n)const {return begin[n];}			//被operator[]当做一个function
+			【经验】：const s.omething cannot be overloaded: 因为你写的是 const T func(){}, 而不是const T func()const {}
+
+	g. Define .begin_func(), .end_func(), constant_iterator.
+		你要定义const_iterator, 这样你返回的iterator也可以做 const iterator. 
+
+	    typedef const T* const_iterator;
+	    iterator begin_func(){return begin;}
+	    iterator end_func(){return end;}
+	    const_iterator begin_func() const {return begin;}
+	    const_iterator end_func() const {return end;}
+
+
+	h. Define = : 你也要define = 来表示assignment （obliterate, 湮没）
+		1. vec& operator=(const vec&), 这个自然会改动members, 所以你不需要 const 
+		2. 【技巧】在class header (也就是template header) 的头文件里，type 是implicit, 所以你不用写出来，所以你在class definition 里可以直接写：  vec& operator=(const vec&);
+		而当你在这个header file 之外的地方，你必须要explicitly 写出type. 不过，你可以用template 的argument deduction. 在一个template scope 里（return type 不算，但是::算）你可以有忽略type, 即T
+			template <typename T> vec<T>& vec<T>::operator=(const vec& rhs){	//vec<T>::就算
+￥￥￥		3. 自我赋值，你要delete 之前的vector，但是若这两个是一样的，你就把两个都删除了。 你可以比较this 与新的pointer，this储存的是现在这个object 地址。 ??????你uncreate 这个vector 不会destroy this？
+		4. initialization: 当你用= 来initialize，你要type conversion by copy constructor.
+		5. copy constructor vs assignment:
+			ASSIGNMENT 要查自我赋值，并且要deallocate class所拥有的容器的值，之后进行赋值或copy，最后返回一个*this 来表示返还的object。但是copy 根据iterator来一个值一个值的赋值。 
+				class foo
+				{
+				public:
+				    foo(){}
+				    foo(const foo&){cout<<"copy constructor"<<endl;}
+				    foo& operator= (const foo&)
+				    {
+					cout<<"Assignment Constructor"<<endl;
+				    }
+				};
+
+				int main(int argc, char** argv)
+				{
+				    foo f1, f2;
+				    f1 = f2;
+				    foo f3 = f1;
+				    return 0;
+				}
+		6.what is synthesized "="? 就是两个 EXISTING objects，每个member 都根据自己固有的 = 来进行赋值。当implementation检测到两个existing objects 时，他会自己用assignment。不然，他会用copy constructor。
+
+￥￥￥	i. 【偏】syntax sugar: int *i; *(i+10)完全等价于i[10], 而*(10+i) = *(i+10), 所以10[i]也是可以的！！
+
+	j. Destructor: no return type, no argument, and it is responsible for 清除memory allocation. 
+	【注意】destructor 对built-in type 不做任何的事情。 哪怕指针被destroy 的时候也不会被free。 所以，你要手动把built-in type的指针清除掉！！
+
+	o. 三位一体原则，the rule of three: 1. 要有destructor,来释放pointer, 尤其是built-in　（不然就是memory　leak, momory is not released when it's not needed anymore）  2. 有相应的copy, assignement operator. （不然的话，两个copy 都会把指针都copy 过去了。你destruct 一个有可能把另一个也给destruct了）所以，你要像对待constructor 一样对待他们。 3. 要有constructor, 尤其是default constructor. 
+		T::T();
+		T::~T();
+		T::T(const T&)
+		T::operator=(const T&)
+
+	p. push_back() function
+		
+
+		1. grow()
+
+		2. append()
+2. push_back: 你一开始分配你需要内存的两倍，然后每次加的时候，如果hit capacity, 那么再另加。 所以，你Push back 需要记录你capacity (end) 在哪儿。 
+
+3. Flexible memory management
+	a. new and delete is expensive. because they call the default constructor to initialize!!!. 试想你每次需要两倍的memory来扩大你的vector， 你每个element都会被initialized!!! 。 你可以用stl 的functionality，（Core language 不会有的，因为这个Memory management 取决于用户自己，用户可以自己用library）。
+
+	b. <memory> library, class allocator<T>, 所以你需要declare an allocator object. 
+		1. T* allocate(size_t)	你放进去一个size，然后他给你返回一个type T pointer 指向一个unitialized block of memory。【注意】这个很危险，因为你有可能free一个memory，里边根本没东西！所以要keep track， 你的责任。 
+		2. void deallocate(T*, size_t): free uninitialized storage, allocated by the allocate function, 你也需要个他一个size. (what about initialized ones?). release the memory!!
+		3.void construct(T*, const T& val), copy val to that storage. 
+		4. void destroy(T*): destroy the object indicated， like calling the destructor of the object. 
+
+	c. 我们自己的function 用来initialize uninitialized memory. 
+		template <typename T, typename out> void unitialized_fill(out,out,T&) // fill the indicated storage by out with value of type T. 
+		template <typename in,typename out> void unitialized_copy(in,in,out)	// copy the range indicated by in to out.
+	
+	 	【注意】: 或者我们可以把它定义在class 里面。 不一定要一个file， 你需要
+			template<T> class foo
+			{
+				template<l> void lol(l input);
+			}
+
+			template<T>template<l> void class foo<T>::lol(l input) 	// 一定要两个template, 并且要按这个顺序！
+	
+
+￥￥￥4. 【技巧】： 你可以declare 一个object without name, as a temporary object! 比如 int(2), double(3.4), 等等。 这样的variable, 叫做有expression scope: created, evaluated and destroyed within the scope
+
+
+		
+--------------------------------------chap12　Defining abstract data type --------------------------------------------------------------	
+1. default constructor 有时也是Implicitly called 的，比方说如果要assign, 你没有initialize的话，会先按照default constructor 来。 不过在定义class的时候，你要是有了其他的constructor的话，你必须要explicitly 
+define the default constructor，即使这个default constructor 是和synthesized 的是一样的
+
+2. 我们做较高层的container,就不用自己手动memory allocation 了，vec自己就可以synthesized. 
+
+3. Initializer list 原来是在这里call 每个变量的initializer!!!fuck
+	  Str(int n, char c):data(n,c){}                                    //【习惯】 能用initializer List的尽量不要用{}; 
+
+4. constructor 里边还能用copy 哪
+	 Str(char* arr){copy(arr,arr+strlen(*arr),back_inserter(data));}        //【注意】 copy 需要back_inserter loll； 【技巧】strlen 的妙用！
+
+5. type conversion (user-defined conversion). str = "abc". 一个是char, 一个是Str, 怎么convert？
+	a. 因为你有个constructor， 见4， 并且没有explicit, 所以你可以直接 str = "abc", 等价于 str("abc").
+		1. 其实具体细节是， 有个temprary Str 的object 被create， 然后str = temp
+
+6.     ~Str(){}                // can be omitted since no work is to be done.
+
+7. []的定义
+	a. 有两种overloaded Operator(就是我们自己定义的operator)： binary 和uniary. 并且，operator很多可以是Non member functions， 有些如[]则必须是member functions 
+		1.（其实operator 和一般function 一样，需要有name， return type， 和arguments. 
+	b. 如果operator function不在一个class 里， 比如operator+（a,b），则a是左手边的operand, b 是右手边的operand！ 【TODO】而operator[](i): 因为这个是个member, 所以它自动有了隐含的一个argument——object自己（永远是左手边operand），而这个i则是在右手边operand？？
+
+8. what istream_obj.get(c) 和 istream.unget()?  
+	a. istream::get(c) 从istream 里读取一个char， 把char放进c里，然后返回*this. 当遇到eof时，他会停止（并返回eof?）
+	b. 当你用了get之后，你若要把char重新放回去，你需要is.unget()， 里边不需要argument，这样最后一个char会被重新放回istream里。
+
+9. str.data.clear() 要自己定义吗？？？
+
+10. friend functions: 有时，你有一个outside function， 要对一个Private member 有read write access. 但是你又不想把这个member 变public。 这样你需要把这个function declare 成为friend function. 这个
+	a. 【习惯】friend function 不需要Public 或private。 所以你可以把所有friend function 放到class definition 最上面，接近public位置。 
+	class foo{
+		friend std::istream& operator>>(std::istream&, Str&)
+		public:
+		...
+	}
+
+	b. 这个friend function 和member function 是同等privilege。
+
+11. operator +
+	a. is it a member function? 因为+两边都改变值，所以可以是Non-member function。 你只需要一个return 值即可。
+	b. what is its return type? Str
+	c. how do you implement it? 
+		1. += 会更容易一些。 a+=b 左边改变值，所以必须是member function，why return *this? 见第二点。 这样你就可以直接return r+=b 了！ 此外注意， return *this 一般用在return type 为reference上面，而不是return value, 因为这样你的Object 不会随着return 完成之后被destructor灭掉。
+		 Str& operator+=(const Str&b){copy(b.data.begin(),b.data.end(),back_inserter(data)); return *this;}
+
+		2. Str operator+ (const Str& a, const Str& b)  //it can't be Str& since the object will be destroyed
+			{
+			    Str r = a;
+			    return r+=b;
+			}
+
+12. mixed-type conversion: 如果没有特别的Overloaded operand function 的话，如果你有type_a_object +%^$ type_b_obj, 并且你的其中一个obj 可以转化另一个type 到自己的type，那么compiler就可以自动转化
+	a. Str a = "lol"'; Str b = a + "sos"; // 这是可以的，因为Str里有constructor把"sos"转化为Str。  他会自动生成Str temp("sos")， Str b = a+temp;
+		1. 所以在commercial string library中，operator都有相应的overloaded operator
+	b. Str b = "lol"+"sos"		   //这是不可以的，因为必须是mixed type，或者你operand function 有相应的overloading。
+
+13. 赋值操作，combined-operator 都应该是member operator functions
+	a. 如果 = 不是member function, 那么左侧operand 可以convert 到其他type。 比如string a; Str b = "lol". b = a; 加入b 可以转化成a, 那么string tempb 会生成，然后tempb = b. 但是tempb是个temporary object。 所以他会消失！
+	b. += 这样本身就是assymetrical 的operator就应该是member function， 这样，左侧的operand, 如 char* a = "sos"; Str b = a, b 就不用转化成char*!
+
+13.explicit 的应用: explicit constructor(some_argument), 应该当你这个argument只是影响结构，比如说是size的时候，你要用explicit，这样，才不会有像vec<int>v = 4 这样会和值initialization 而产生混淆； 当这个argument1是某个实际的值的时候，你不应该有explicit, 因为你可以有int v(3) ==> int v = 3, 来表示他的值。 
+
+14. Conversion operator: 也就是cast_type。 这样你可以double(student_info_obj)来获取这样的一个值。 通常，class-type to built-in type 是比较常见的。 
+	a. 形式： public: operator double(){...}			//【注意】，这里没有 return type， 并且名称一定是已有的type 名称！
+	b. 你也可以 double d; d = 2+ student_info_obj[i];
+	c. cin 的type conversion: if（cin>>x）
+		1. if (boolean_value)。 if 中的判断该是boolean。 而boolean可以由all arithmatic values, 或者是pointer （null pointer 为零）转化过来。
+		2. 而cin里边就有一个istream::operator *void 这样一个pointer， 所以当你成功读取的时候，cin会检查各个flag，然后这个pointer 不是空的
+			a. *void 是universal pointer， 不能被dereference 【对，你要dereference 要static cast<int*>(ptr),而你自己必须keep track】但是可以被用来当做任何type的pointer。 
+			b. cin 为什么不直接来个boolean 呢？ 是为了防止cin<<x 这样情况。 如果直接返回boolean, 那么它代表的意思是： << 不是cout的<<. 而是left bit shift. cin 会返回boolean, 而这个boolean 会在<< 前自动转化成int， 然后他的bit向左移动x 位。 所以如果bool 本来是1，那么有可能最后return的结果是1！ 
+	d. string to char* 的conversion.
+		1. 想像你有ifstream in(char* file_name), 这个时候你有一个string 的话，你需要char*.所以你需要转换。 
+		2. 但是你要是conversion operator 的话， 那么str a. 他的data 是vector type， 你必须要转化 b.你就算把vector给改成char*, 那么你还有encapsulation 的问题： 你只能read， 不能2直接让用户write。此外，这个char array 必须保证它在end of scope时候要free这个pointer。 你用new 在class 外边创造一个array不行， 因为在implicit conversion中， ifstream in(str)， 会在conversion，copy 完value之后丢失掉pointer, 二没有free掉他。
+		3. 所以，String library 有三种return char array 的方式： 
+			a. const char* c_str() const ,return 一个pointer指向object 里边自己的一个char array，用户不能free这个pointer， 因为object 已经照顾到了；2. 同时保证encapsulation。 3.【注意】： 你在用的时候，你也要const char*！！ 4.【注意】：如果你后来通过其他的方式改变了str 的值，那么这个pointer 就没用了。 
+			b. data(): 和c_str()类似，但是没有最后的'\n', 
+			c. const char* copy(int num, char c); 
+
+	e. 不要有两个class 互相convert！不然会有confusion
+
+
+ --------------------------------------chap13　Defining abstract data type --------------------------------------------------------------	
+
+1. Derived class:
+	a. it can be private child class; public means: parent's public class is also child's public class. 
+	b. derived class can modify, but not delete parent class members. 
+	c. derived class can overload parent's functions, for its own good. 【注意】： 当child Class func calls parent class func， 必须要有 scope operator, like parent::func,不然就是recursive， disaster！
+		1. A::B 叫qualified id, 因为他点出了where B belongs.
+		2. B call A 的public 或 protected member 不需要：。 
+		3. child class: public 或protected， friend: public, protected, private
+
+2. Binding
+	a. binding 就是： bool compare(const core&，const core&)是定义，你compare(core_obj1, core_obj2)来binding。 
+	b. parent and child class cross-binding: 定义的时候 bool compare(const core&，const core&), 但是实际call 的时候你可以compare(grad_obj1, core_obj_2). 
+	c. 你如果定义bool compare(const core) 或者bool compare (const core*)的话，你照样可以cross-binding
+
+
+3. Virtual functions
+	a. 如果你child class， parent class 都有function foo， 那么你在binding 的时候，比方说bool compare(const core&)但是你call compare(grad_obj1), 因为grad_obj1 是child class, 那么你会call core 的function， 而不会call grad的function。
+	b. virtual 就是在runtime 的时候由compiler 根据passed 的object type 来决定哪个function会被call. 不然，则是跟
+	c. virtual 只需要在base class 里边的definition 写一次就行了， child class 不用写virtual, 而且class外边也不用写virtual. 
+			class parent 
+				{virtual double grade()const;}
+			class child 
+				{double grade()const;}
+			double parent::grade() const;
+			double child::grade()const		
+			void test(parent& p){p.grade();}	// Here is polymorphism, without virtual keyword, parent 的grade() 会被call。 有了virtual, object 自己的grade会被call
+	d. 【注意】virtual function definition: 你不必在每个child class 里边都declare overloading function, 但是你一旦declare 了,你就必须define 它!!要知道其他function 你declare之后你不必define
+	e. 一般来说，virtual function 的return type， argument 都是一致的。 
+
+4. Initialize constructors
+	a. class parent 
+	{public:
+		parent(double m = 50):mt(m){};	private: double mt;}		// default initializer with default value of mt.
+	class child 
+	{public:
+		double thesis
+		child(double t = 90, int m =80):parent(m),thesis(t){};		// 你必须要用parent 的constructor,因为上面mt 是private。 【注意】： 你只能用直接上一级的parent class constructor ， 你不可以越级来Initialize！
+	}
+	 			
+	b. const member variable: cannot be defined as declared, should be initialized 只能在该class的constructor里， so that there is only one definition（因为如果你允许在child class 里initialize， 首先parent class 会和child class 的const一道享受被initialize 的权利，而这个则是两次不同的initialize。）即
+	class foo{
+		public:
+		const int i;
+		foo(): i(1){}; 	}	//必须定义在constructor 里边。 
+		
+		2.【注意】：static const 只接受integrl type! 所以 float等不被接受!并且只有static const type 才可以直接在class declaration 的时候写,其他的,比方说static int, const int 等一律不行. 
+
+		3. 你可以用enum 来表示const int. 
+
+
+【重要】	c. constructor: allocate space, --> parent constructor --> child constructor-> child destructor -> parent destructor
+
+
+5. integral type: 其实就是用整数表示的数字，　比方说int(size_t...),char(unsigned_char, w_char...), bool,enum members, bit fields
+
+
+6. Dynamic binding & polymorphism
+	a. static binding: 
+		1. 当你pass 一个object 的时候,因为object 的type 是fixed, 所以在compile time 就可以确定在一个function 中,obejct 的哪一个function 可以被call. 并且这叫static binding. 同理，你就算不pass object，而是直接用这个object， 那么肯定也是static binding. 
+		2. 这个object 会被砍成只有parent class 的一段. 
+	b. dynamic binding 而当对一个function pass by reference 或pass by address, 的时候，这个reference 可以指向parent class, 也可以指向child class. 而具体那个class 会被用上,是在runtime 决定的. 这就是polymorphism.
+
+
+7. Virtual destructor
+	a. 作用： 你有base class pointer, 现在你需要delete(base_class_ptr)， 来free这个ptr 指向的memory。 不过，这个ptr 可能指向一个child class object. 而这个ptr指向的是这个object 的parent class part。 所以，如果强行delete， 那么delete 会call parent Class
+的destructor， 并且只能free parent class 的部分，而不是child class 部分。【习惯】： 如果有polymorphism， 你就要有virtual destructor. 
+	b. 为了解决a的问题， 我们可以讲base class destructor 设为： virtual ~ base_class_destructor(){}
+	c. 这个base class destructor 可以被Inherit 到child class。 这样delete child class object 的时候，delete就可以知道你的memory 的type， 进而把整个的object都free 掉。
+	d. 空的destructor会把每一个member 都按照其default destructor 来free 掉。 所以空的destructor 是常见的。 如果你的Object 里有pointer 需要用到手动的deallocate的方法来free （即到了最底层没有相应的destructor）， 那么你需要在object 的destructor 里面做这个事情 。 不然， destructor空着就好。  
+
+
+8. handle class
+	a. 作用： 我们因为要用polymorphism, 所以有unknown type until runtime, 所以必须要自己动手来create new space，delete new space。 这个很凌乱，怎样归在一块？用handle class
+	b. 比如，1. 你的Public 的interface 应该与parent class， child class 一致。
+	c. 可以用static member function 来：
+		 1. 用作整个class 的通用function， 这个function 只和class 相关，和object 无关。 所以只能access static member variable， 无法access 其他variables
+		 2. 他是 class::static_func, 所以他可以避免overloading， 进而可以拿class:static_func来作为template argument。
+		 3. static function 必须在header file 里declare 并define.
+	d. 加一个parent_class pointer, 这个是他的polymorphism 的核心。 你在member function 里边建立parent/child class object, 然后你在用这个指针来指向object。 因为你child&parent class有相应的virtual function, 所以我只需要建立一个handle_class, 由handle class 的parent_class_pointer 来call function （当然这个pointer 应该是private 的，所以应该在handle_class 的public member function里用这个ptr），这样相应的virtual function 就可以被call 了。 	
+		1.【注意】： 你可以用handle_class default constructor 来创造null pointer, 然后在需要用到object 的function 里边判断pointer 是否为空。 这个时候，你可throw runtime_error(因为这个东西只能在runtime来判断！)
+		【习惯】： 一定要检查一个pointer 是否为空！！
+
+
+9. copy constructor of handle class: student_handle(const student_handle&)
+	a. 在student_handle 里只有一个data member: core* cp. 这个member 是用来做polymorphism 的。 当data member 有pointer 的时候， 我们一定要在copy constructor 里边准确的定义！
+		1. challenge 是： 我们不能讲这个cp 指向同一个object， 而是要先做一个copy。 不过这个copy 有两个type， 你怎么知道要做哪一个呢？ 就算知道了哪一个type，你又怎么把所有的data member 都copy 进去呢？
+		2. solution: 你可以用polymorphism again! polymorphism 就是一个pointer指向两个不同的type！ 所以，构建一个virtual clone*(), 里边构筑一个new grad(grad&) 或new core(core&), 然后return 相应的pointer. 【注意】我们这里用的是default synthesized constructor, which copies all data member's values!!
+		3. 之后，你讲student_handle 列为core 的friend class， 这样all member functions in student_handle will have access to core's private, protected, and public members (program verified). 
+			a. friend class 无法传递： 即parent 的friend 不是child friend (所以data member 你都获得不了， 不过你可以根据parent 的virtual function 来接触child class); friend 的friend 不可以传递哦。 
+		4. 【注意】你可以在student_handle 的copy constructor 里直接call 要copy 的student_handle object 的cp (别忘了这是一个private member）来access这个virtual function！ 原因在于： c++ 的access control是per class 的，不是per object 的， 因为per object 要用到this pointer， 而这个是在run time 执行的，进而会让code很慢。 所以，一个class 可以access 同class 任意一个object 的private data member！
+
+10. copy assignment = of handle class
+	1. 要检查self-assignment
+	2. delete 原有的ptr
+	3. 无法用copy constructor， 要直接做和copy constructor 同样的东西。 
+
+11. vector<student_handle>v; v.push_back(something) 其实使用到了copy constructor! 因为vector需要initialize!
+
+12. 你需要用一个read function 来输入student_handle 的data members. 并且，你在这个读到数值之后， 你建立一个new 的handle object， 以cin 为template argument， 进而call handle 的 constructor using cin.  而这个constructor using cin, 是用 polymorphism （cp pointer）来access parent class, child class 的constructor Using cin！
+
+13. 如果你有一个vector<parent> v; child c; v.push_back(c); 你push back 的结果是什么？
+	对v 来讲，你要push_back 一个parent object. ， 然后call parent的copy constructor, parent(parent&). 我们知道在这个copy constructor中，parent object 大小allocate memory， 然后复制Parent class 的值。 所以，你就算push_back 了一个child class object, 你也只有parent class 的东西可以赋值。 
+
+
+【注意】14. virtual vs non-virtual public functions:
+	a. virtual: same return type+ ame argument, only accessible using ptr or &. 若不满足两者任一条件，都是non virtual
+	b. non-virtual funcs: 只是按照object/ptr/& 的type 来找相应的func. 如果没有就报错。 如果child_class c; c.parent_func()； 的用法是错的。 你要 c.parent::parent_func()这才是对的。 所以就算你调用base class function, 你也一定要声明！！
+	【技巧】:c. 如果你要做virtual function 但是有不同的arguments, 你可以用filler： child_func(int = 0, int i);
+
+【注意】15. constructor若要用本class 的virtual function, 你必须只能用本class 的virtual， 因为constructor 的class 非常明确，无法用polymorphism。
+
+*16. private, protected, public inheritance. 
+
+class base{	
+private:	// class child_private: 可以继承base 的public 和Protected data members,不过他们都成为private member！
+	int i;
+protected:	// class child_protected: 可以继承base 的public 和Protected data members,不过他们都成为protected member！
+	int j;
+public: 
+	int k; //class child_public:public base: 可以继承base 的public 和Protected data members, 并且他们依旧是public，protected
+
+} 
+
+
+15. static member variables/functions
+a. initialize static members:
+class foo
+{static int lol;}		// 此时系统默认所有variable Initialize to 0!
+
+int foo::lol = 1; 		// 你无法在class definition 里initialize 他，不过你可以在outside 来redeclare 他，用foo::形式
+
+b. "this" pointer is not accessible to static member functions. 因为他是object specific.  
+
+
+
+ --------------------------------------chap14　Managing memory almost automatically--------------------------------------------
+
+1. ptr 是个比较原始的data type, 独立于object之外，弄起来很容易出事： 
+	a. memory leak: 删除了pointer, 没free object 
+	b. dangling pointer: free了object， 没删除pointer
+	c. 两个pointer 指向同一个object
+	d. pointer 没有initialize。
+
+2. copy object什么?member variable， 你直接copy 就好，ptr, 你要copy相应的object。 
+3. 把interface和Pointer management放在一个class 里边相对weak！我们最好把他们分开。
+4. 设计： 
+	template <typename T> class handle
+	{
+	public:
+	    handle():p(0){}
+	    handle(const handle& s):p(0){if(s.p)p = s.p->clone();}
+	    ~handle(){delete p;}
+	    handle& operator= (const handle&);
+
+	    handle(T* t):p(t){}         // for objects created by new
+
+	    operator bool(){return p;}          //user-defined conversion
+	    T& operator *()const {if (p) return *p; throw std::runtime_error("Object does not exist!");}
+	    T* operator ->()const {if(p)return p; throw std::runtime_error("Object does not exist!");}      // -> returns a pointer (can be private?) and the compiler will automatically append another -> (required by c++). so you only need c->something
+
+	private:
+	    T* p;
+	};
+
+
+
+--------------------------------------血泪教训--------------------------------------------
+【编程经验】1. 注意side effects!! 
+		a. 比如，如果你写if(++beg == end) 你实际上增加了beg!!
+template<typename T, typename V> bool binary_search_exist_iterative(T beg, T end,V tar)
+{
+    if (*beg == tar) return true;
+    else if(beg+1== end) return false;      //DON'T WRITE beg++! CUZ THAT WILL INCREASE beg!!
+    else{
+        T temp = beg+(end-beg)/2;
+      //  std::cout<<"temp is "<<*temp<<" beg is "<<*beg<<" end is: "<<*end<<std::endl;
+      //  if (*temp==0) return 1;
+        if(*temp < tar) binary_search_exist_iterative(temp,end,tar);
+        else if(*temp>tar) binary_search_exist_iterative(beg,temp,tar);
+        else return true;
+    }
+}
+
+【编程经验】：2.defining global variables in different files. 
+你要： a. extern b. declare.
+extern 是告诉compiler 你要在其他地方declare。 但它本身并没有被declare。 比如： 
+		func.h: extern int a; 
+		func.c int a; define_a(){a = 3;} 
+		
+
+【编程经验】
+
+
+		 
+
+			
