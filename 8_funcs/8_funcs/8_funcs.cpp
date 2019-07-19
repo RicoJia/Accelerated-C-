@@ -105,3 +105,15 @@ void test_partition()
     partition_algo(d.begin(), d.end(), less_than_ur_num(num));
     print_vec(d);
 }
+
+//Problem 8-2
+double find_median(vector<double> vec)
+{
+    typedef vector<double>::size_type vectorsz;
+    vectorsz size = vec.size();
+//    if(size == 0)
+//        throw domain_error("Find Median: the vector is empty, no median can be found!");
+    sort(vec.begin(),vec.end());
+    return (size%2==0)?(vec[size/2]+vec[size/2-1])/2:vec[size/2];     //-1/2 =0, 3/2 = 1;
+}
+

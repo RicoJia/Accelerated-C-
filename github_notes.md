@@ -13,7 +13,9 @@ b. commit the branch (saves)
             0.5. git log                                        show all commit history
             1. touch file_name                                  create a new file. Question: create new file on new branch, but it also shows up on the old branch????
             2. git status                                       check out files that are added. 
-            3. git add filename                                 stage the new file. nothing being added right now but it's telling git that it's going to add something for commit
+            3. git add filename                                 stage the new file. nothing being added right now but it's telling git that it's going to add something for commit]
+	    3.5 git add -A 					stage all files/deleted files, better than git add .	
+		
             4. git config --global user.name "name"             git needs your info
             git config --global user.email "email"           
             5. git commit -m "message"                          commit with a message. BE SURE IT's IN YOUR BRANCH!!

@@ -98,15 +98,11 @@ void write_analysis(ostream& out, string name_analysis, double analysis(list<stu
 double median_analysis(list<student>&stus)
 {
     vector<double> grades;
-   transform(stus.begin(),stus.end(),back_inserter(grades),grade_aux);
-    // 强行插入
-  /*  copy_if(grades.begin(),grades.end(),back_inserter(pgrades),pgrade);
-    grades.erase(remove_if(grades.begin(),grades.end(),pgrade),grades.end());*/
+    transform(stus.begin(),stus.end(),back_inserter(grades),grade_aux);
     vector<double>::iterator iter = partition(grades.begin(),grades.end(),pgrade);
     vector<double> pgrades (grades.begin(),iter);
     grades.erase(grades.begin(),iter);
     cout<<pgrades.size()<<" passed, "<<grades.size()<<"failed. "<<endl;
-   // cout<<"Grades of ppl who passed: "<<pgrades[0]<<endl;
     try {
         return find_median(grades);
     }

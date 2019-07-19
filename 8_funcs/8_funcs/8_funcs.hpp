@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 #include <algorithm>
+#include <vector>
+#include <list>
 
 template <typename T1, typename T2> bool equal_algo(T1 beg, T1 end, T2 beg_2)
 {
@@ -167,4 +169,19 @@ private:
     int num;
 };
 void test_partition();
+
+//8-2
+
+double find_median(std::vector<double> vec);
+template<typename List_stu, typename F>
+double median_analysis(List_stu&stus, F func)
+{
+    std::vector<double> grades;
+    transform(stus.begin(),stus.end(),back_inserter(grades),func);
+    return find_median(grades);
+}
+
+// 8-3      - Duh you need to sort the vector, which will change the value of the vec.
+//8-4       - you're just going to swap the two pointers while the vector stays the same!!
+
 #endif /* __funcs_hpp */

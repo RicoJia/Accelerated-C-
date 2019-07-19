@@ -540,6 +540,9 @@ stable_partition(s1.begin(),s1.end(),predicate): 不打乱顺序的partition
 	a. 这个时候你在用的时候必须clearly define the return type. 如double a = zero();
 	b. function每一个被call 的type 都会被Instantiate
 	c. 当template function 当做function pointer 时，你必须要instantiate template, 也就是specify T！
+		template <typename T> bool comp_remove_cope_if(T itr);    
+    		transform_algo(p, p+4, l.begin(), comp_remove_cope_if<int*>);here comp_remove_cooy_if 是一个function pointer
+	d. 你必须在h file 中定义。 并且你要call 的其他func都要先declare。 
 
 
 14. 【特殊】在copy 这个func中， *cout_itr++ = *cin_itr++; 对一般的container 适用（即*cout_itr = *cin_itr; ++cout_itr; ++cin_itr;）但是，对cin, cout不适用！

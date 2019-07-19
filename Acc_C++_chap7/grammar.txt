@@ -1,0 +1,43 @@
+// Make sure your rules have spaces in between!!
+Categories Rules
+
+<noun> cat
+<noun> dog
+<noun> table
+
+<good-noun> Justine
+<good-noun> Rico
+
+<noun-phrase> <noun>
+<noun-phrase> <adjective> <noun-phrase>
+
+<adjective> large
+<adjective> brown
+<adjective> absurd
+
+<verb> jumps
+<verb> sits
+
+<good-verb> ki$$e$
+<good-verb> hug$
+<good-verb> love$
+
+<location> on the stairs
+<location> under the sky
+<location> wherever it wants
+
+<sentence> the <noun-phrase> <verb> <location>
+<sentence> <good-noun> <good-verb> <adjetive> <good-noun> <location>
+
+
+
+
+
+
+
+
+
+
+
+
+
