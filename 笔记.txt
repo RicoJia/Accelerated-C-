@@ -447,6 +447,11 @@ stable_partition(s1.begin(),s1.end(),predicate): 不打乱顺序的partition
 	【注意】：map<string vector<int> > 这个> 中间要隔开，不然他是>>!
 	【注意】：　map 不能是const!
 
+
+3. map initialization:
+  	  map<int,string> m = {{1,"hola"},{2"amigo"}};   //<key,value>
+
+
 4. lol[s]也可以用在map上。这里s便是string 了。 
 	a. 【注意】不过，当这个s不存在的时候，map会自动生成lol[s].所以不推荐检索的时候也用这个！况且，如果lol是const map 的话，const 不允许你用[s]!!那么你用什么？ 你用lol.find(s)。这个会return给你一个iterator, 如果没有找到的话，他给你返回map.end(). 
 		map的iterator，要用-> first (key), -> second 来表达！！若你用map[], 则不用->
@@ -1123,9 +1128,25 @@ extern 是告诉compiler 你要在其他地方declare。 但它本身并没有�
 		func.c int a; define_a(){a = 3;} 
 		
 
-【编程经验】
+【编程经验】 3. adding two pointers/iterators together
+a. a+b， 两个都有address. 所以你无法a+b, 只能a-b!
 
+【概念】4. map 的基础是pair
+	map = {{key1,val1},{key2,val2}}; 所以你可以用Map.begin, map.end 来做哦
+	【注意】cout 一个map，或是一个pair， 你要cout<<map[i].first<<map[2].second<<endl;
+	
 
+【详解】4. output iterator 
+		a. output_iterator ++ 是可以指向下一个元素的
+		b. *itr = something 
+	back_inserter 是一种output iterator， ostream_iterator<something>(cout, " ")也是output iterator 
+
+【编程经验】5. func(const T&)， 在call 的时候，你不能func(another_func())或者func(back_inserter(vec))， 因为这些都是rvalue, 即temporary objects. 你需要const T 来做个copy来保存这些东西。 
+
+【编程经验】6.因为temlplate 在compile time 的时候就要instantiate,而关键就是要为每一个T建立class。 如果class里边没有function 的implementation,function 也无法accessible???
+	所以你可以在.h file 里写declaration， 然后在最后写#include".cpp", 然后在.cpp 里边写Implementation。 
+
+【编程经验】7.ss.str()   
 		 
 
 			

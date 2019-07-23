@@ -2,6 +2,7 @@
 // Created by rico on 6/27/19.
 //
 /*Read me:
+ * This is an enhancement of chap7 grammar machine exercise. The program uses output iterator to print out words in real time.
  * Data structures: grammar (or grammar book) is a map<string category_name,vector<string> rules(words or phrases)>
  * The core algorithm is gen_aux, which is iterative. It starts from <sentence>, and then it selects a random element A from it.
  * Once the element A is selected, all subelements of A will be executed by plugging into the next iteration:

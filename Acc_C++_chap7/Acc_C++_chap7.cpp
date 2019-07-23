@@ -23,8 +23,8 @@ using std::istream_iterator;
 
 int main()
 {
-    grammar_parser();
-   // url_word_xref();
+    //grammar_parser();
+   url_word_xref();
 
    return 0;
 }
