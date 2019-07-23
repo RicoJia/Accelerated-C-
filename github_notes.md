@@ -43,14 +43,24 @@ d. Push to remote
                          $ git push [name_of_your_new_remote] [url]
             
 
-e. pull request to merge into master??
-
+e. pull request to merge into master?? ()
+	    1. asking for advice, 	
 
 f. Get update from remote to local branch
             1. git fetch [name_of_your_remote]
 
 g. Delete a branch remotely
             2. git push origin --delete branch_name
+
+h. Undo undesired changes:		https://docs.gitlab.com/ee/topics/git/numerous_undo_possibilities_in_git/
+	1.Before staging
+	    git stash							temporarily store all changes somewhere else.
+	    git checkout -- <file>		   			permanently discard local changes
+	    git reset -- hard						Discard all local changes permanently
+	2.After staging before commiting
+	    git reset HEAD <file>					unstage a file
+	    git reset							unstage everything
+ 	 
             
 2. Working on forks (the entire repo with all branches)
 

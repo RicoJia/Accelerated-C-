@@ -1147,6 +1147,9 @@ a. a+b， 两个都有address. 所以你无法a+b, 只能a-b!
 	所以你可以在.h file 里写declaration， 然后在最后写#include".cpp", 然后在.cpp 里边写Implementation。 
 
 【编程经验】7.ss.str()   
-		 
+【编程经验】8. 要有一个constructor that reads a from user. 
+【解释】9. const member function in class 是只有read access. const object: const student_info student; 只有const member function 才可以在const obejct 上做事情。 
+【经验】10. 必须当member function的： 1. = assignment 2. overloaded operator 3. constructor 4. type conversion 5. virtual function
+【教训】11. member function, member variable 不能有同样的name！		 
 
 			
