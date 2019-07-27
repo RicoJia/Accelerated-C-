@@ -181,6 +181,8 @@ double median_analysis(List_stu&stus, F func)
     return find_median(grades);
 }
 
+
+
 // 8-3      - Duh you need to sort the vector, which will change the value of the vec.
 //8-4       - you're just going to swap the two pointers while the vector stays the same!!
 

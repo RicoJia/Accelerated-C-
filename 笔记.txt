@@ -84,6 +84,7 @@ std::cout<<"hello world"<<std::endl； = (std::cout<<"hello world")<<std::endl;
 	i!=end_value 是一个“invariant”
 ￥￥￥17. !x has higher priority than *,/
 18. size_t: 任意长度非负整数. unsigned long, unsigned long long, unsigned short, unsigned int.  string::size_type, 专门针对string 的。
+	#include<cstddef>
 	int: 4bytes, short: 2 bytes, long: 8 bytes
 19. unsigned int: 32 bit size_t. 
 char: 1 byte. 
@@ -348,7 +349,7 @@ char: 1 byte.
 13. 【信息】： cctype 里边有manipulate character 的工具，比方说 toupper, tolower, isalpha等等
 
 ￥￥￥14. segmentation fault: read/access a read-only or freed memory 
-	常见情况： 没有return; output iterator 设的不对，比方说应该是back_inserter； array 超过boundary
+	常见情况： a.没有return; b. output iterator 设的不对，比方说应该是back_inserter； c. array 超过boundary  -- 我们自己设计的vec 也有这个问题！！d. dangling pointer, 即没有定义它
 
 ￥￥￥15. string 要 string c(n,'a')而不是string(n,"a")!
 	string(i,j), i, j 为iterator, 并且copy[i,j)
@@ -1015,7 +1016,12 @@ define the default constructor，即使这个default constructor 是和synthesiz
 	c. 可以用static member function 来：
 		 1. 用作整个class 的通用function， 这个function 只和class 相关，和object 无关。 所以只能access static member variable， 无法access 其他variables
 		 2. 他是 class::static_func, 所以他可以避免overloading， 进而可以拿class:static_func来作为template argument。
-		 3. static function 必须在header file 里declare 并define.
+		 3. static function 可以这样define 【注意】： 没有static in definition!
+			class A{    static bool F2front (student_info& stu);}
+			bool student_info::F2front (student_info& stu)
+				{
+				    return (stu.get_letter_grade()=='F');
+				}
 	d. 加一个parent_class pointer, 这个是他的polymorphism 的核心。 你在member function 里边建立parent/child class object, 然后你在用这个指针来指向object。 因为你child&parent class有相应的virtual function, 所以我只需要建立一个handle_class, 由handle class 的parent_class_pointer 来call function （当然这个pointer 应该是private 的，所以应该在handle_class 的public member function里用这个ptr），这样相应的virtual function 就可以被call 了。 	
 		1.【注意】： 你可以用handle_class default constructor 来创造null pointer, 然后在需要用到object 的function 里边判断pointer 是否为空。 这个时候，你可throw runtime_error(因为这个东西只能在runtime来判断！)
 		【习惯】： 一定要检查一个pointer 是否为空！！
@@ -1049,15 +1055,14 @@ define the default constructor，即使这个default constructor 是和synthesiz
 
 【注意】15. constructor若要用本class 的virtual function, 你必须只能用本class 的virtual， 因为constructor 的class 非常明确，无法用polymorphism。
 
-*16. private, protected, public inheritance. 
-
+*16. private, protected, public inheritance. 【注意】，child class 依然可以继承parent private members, 但是他们无法直接access!他们只能通过public parent class function 间接去改变这些parent private members. 
 class base{	
-private:	// class child_private: 可以继承base 的public 和Protected data members,不过他们都成为private member！
+private:	// class child_private: 可以access base 的public 和Protected data members,不过他们都成为private member！
 	int i;
-protected:	// class child_protected: 可以继承base 的public 和Protected data members,不过他们都成为protected member！
+protected:	// class child_protected: 可以access base 的public 和Protected data members,不过他们都成为protected member！
 	int j;
 public: 
-	int k; //class child_public:public base: 可以继承base 的public 和Protected data members, 并且他们依旧是public，protected
+	int k; //class child_public:public base: 可以access base 的public 和Protected data members, 并且他们依旧是public，protected	
 
 } 
 
@@ -1150,6 +1155,127 @@ a. a+b， 两个都有address. 所以你无法a+b, 只能a-b!
 【编程经验】8. 要有一个constructor that reads a from user. 
 【解释】9. const member function in class 是只有read access. const object: const student_info student; 只有const member function 才可以在const obejct 上做事情。 
 【经验】10. 必须当member function的： 1. = assignment 2. overloaded operator 3. constructor 4. type conversion 5. virtual function
-【教训】11. member function, member variable 不能有同样的name！		 
+【教训】11. member function, member variable 不能有同样的name！		
+【技巧】12. exception 是stdexcept里的母class，所以，他罩着所有error，比如domain_error. 不过，.what() 是一个virtual function。 所以要print一个未知type的exception，要catch (exception& e), 而不是catch(exception e). 
 
-			
+		Class exception
+		{
+		public: virtual  const char* what() throw{return msg;}
+		private: msg;  		//默认值"std::exception"
+		}
+
+		class domain_error:public exception
+		{
+		public: const char* what() throw{return msg;}
+		private: msg;		// 
+		}
+
+
+	
+【教训】13.在用partition, transform 等时，你的predicate 的argument是*(itr), 而不是iterator 本身！		
+【解释】14. template class function 的使用
+		template<typename T>
+		class foo
+		{
+		public:
+		    void bar(const T &t);
+		};
+
+		template <class T>
+		void foo<T>::bar(const T &t)
+		{ }
+
+		// Explicit template instantiation
+		template class foo<int>;
+
+【教训】15. 最好的template的办法就是在h file 中定义！！
+【教训】16. typedef 顺序： 哪怕在class definition中，也要放在最前面！不然会说"expected ‘)’ before "
+		class vec
+			{
+			public:
+			    typedef std::size_t size_type;
+			    vec(size_type i):sz(i){}
+			}
+
+【解释】17. Memory management
+		1. how to assign memory with/without initial value? 
+			std::allocator<T> is typed, but not initialized!
+    		2. why not use new? 
+			A: 1. default constructor is required -- cannot assign memory without initialization
+		3. deallocator:
+			A: destroy: run destructor 
+				 delete是从后往前的destroy
+			B: deallocate(T*, size_t): requires non-zero ptr, 和array size. 	
+				与之对立的是delete 不需要一个non-zero ptr。
+			C: set dangling pointers to null
+
+【解释】18. explicit: 只有constructor, conversion operators need this	
+【解释】19. Built-in default constructor: non-static class built-in member 是不会value initialize的。 static 会的。 
+					其实 conceptually， int()是存在的， initialize 为0. 
+【解释】20. const 
+		1. const variable：　自己不会变
+		2. const function: 本身和non-const function 无任何区别。
+		3. const member function: int func()const: 表示这个function 对class members 都只是read-only access
+		4. const_iterator: const object 需要const_iterator 来access。
+			const T& operator[] const(size_type i) {return array[i];}//第一个const 就是返回一个const T& object， 第二个const 是在执行过程中只有read only access. 如果没有第一个const， 那么一个const object 的[]就不是const 了， 他并不会在compile 中出现问题，但是这会在使用中出现问题。  第二个const, 才是重点： 一个const object 在使用这个的时候，他需要保证他object不会被改变。如果没有这个const，那么compile的时候就会出现问题！
+
+【解释】21. return type of operator
+		c++允许return void， 但一般operator 都会return a　reference to the assignee
+
+【解释】22. = 的设计
+	a. assignment 
+		1. 查self assignment
+		2. obliterate existing value
+		3. copy the new value
+	b. initialization　	(用constructor的implicit conversion 来实现)
+		1. create object		比copy constructor 多这一步。
+		2. copy value 
+		【注意】: vec<int>a = {1,2,3}		//这种方法叫list initialization. 
+			  【惊】vector<int>v ({1,2,3});             //does compile!
+
+【教训】--没有定义 = 的后果
+	vec<int> a; a = {1,2,3}
+	这时{1,2,3}会用Implicit conversion 做一个temporary object， 然后a 会用default = 来copy temporary obj所有的value，包括地址。 但是这一块memory 会被destroy！！ 
+
+【教训】23. func(iterator& ) 不好！要用func(iterator)
+	otherwise temporary a.begin() can never be used!!
+
+【解释】24. template class function 在class definition 中， 你可以不用写T, 但是在class definition 之外则一定要写！语法糖。 
+	template<typename T> class foo
+	{
+		int lol();
+	};
+
+	template<typename T>
+	int foo<T>::lol(foo a)
+		{return 0;}
+
+	而argument 里边的(foo)不用写<T>, 因为这是可以被infer 出来. 
+
+	copy constructor - 可以被synthesize 出来！！诸如student_info stu(stu1)。 
+
+
+【额外】25. checked iterator: 保证你array的bounds 不会被overwritten， 是microsoft 的stdext 里的一个function. 
+
+【问题】26.? allocator::construct vs =: 他们都用copy constructor. why use the first one?
+
+【解释】27. default constructor & default destructor
+		1. 如果你有了任何constructor, 哪怕是copy constructor, 系统都不会给你synthesize default constructor!
+		2. 一个class member， 最好要有自己的default destructor!
+		3.class member 有一个T* ptr, 那么default destructor只会destroy ptr,而不会destruct ptr 指向的object（memory leak）！所以1.一旦member 有ptr，构建class 的destructor； 2. 用smart pointer
+
+
+【额外】28. time: 用 std::chrono
+
+【解释】29. initialize static member variable： 你要在class definition 外边define，但是
+		在每个cpp file 里边做 definition： 如int student_info::default_const_call = 0;因为如果在h file define, 你之后的每个cpp 都会再define 一遍
+
+【解释】30. 同样的push_back， vector 要比list 复制的次数多，因为vector 的push_back 需要不停dynamically allocate memory. 
+但是list 比vector 加的要慢？？？ 是的，因为vector 更compact。
+
+【解释】31. 两个null pointer 相减是0
+
+【教训】32.不要destroy 一个未经initialize的memory！一定要initialize!!!
+
+
+

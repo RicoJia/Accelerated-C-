@@ -1,5 +1,8 @@
 Sample work-flow: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
 
+0. How to update the existing repo from remote server?
+	    1. git pull origin branch-name 		    certain branches are updated
+	       git pull    				    all branches are updated
 a. Working on branches (versions)
             0. git clone -b branch_name repo_name
             1. git branch -a                                check all existing branches in your repo directory;  * means current branch; HEAD is the pointer pointing to your current branch
@@ -61,7 +64,7 @@ h. Undo undesired changes:		https://docs.gitlab.com/ee/topics/git/numerous_undo_
 	    git reset HEAD <file>					unstage a file
 	    git reset							unstage everything
  	 
-            
+         
 2. Working on forks (the entire repo with all branches)
 
 Z. BUGS

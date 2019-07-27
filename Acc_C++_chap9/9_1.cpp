@@ -24,6 +24,7 @@ using std::setprecision;
 using std::setw;
 #include <stdexcept>
 using std::domain_error;
+using std::exception;
 #include <cctype>       //isspace
 
 int test_9_1()
@@ -77,17 +78,17 @@ istream& student_info::input_info(istream& in)
 {
     cout<<"Hello, please enter your name here"<<endl;
     getline(in,nombre);
-//    if(!in) return in;      //TODO: future improvement: once an empty input is typed in, program exits!
+    if(!in) return in;      //TODO: future improvement: once an empty input is typed in, program exits!
     cout<<"Hi "<<nombre<<", please enter your midterm and final grades here"<<endl;
     in>>midterm>>final;
-//    if(!in) return in;
+    if(!in) return in;
     
     cout<<"Please enter all your homework values here, closed by ctrl+d"<<endl;
     read_hw(in);    //might be empty,end-of-file, return the status of reading cin, and write cin into homework.
     try{
         final_grade=grade();
     }
-    catch (domain_error e){
+    catch (exception e){
         final_grade =  0.2*midterm+0.4*final;
         cout<<e.what();
     }
