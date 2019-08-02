@@ -20,9 +20,12 @@ std::cout<<"hello world"<<std::endl； = (std::cout<<"hello world")<<std::endl;
 	// 
 	#include 名称
 6. 符号
-	/t is tab; /b is back；  /0 is 空字符，自动添加到char【】的结尾
-	/* /**/ */ 不成立，因为结束于第一个*/ 
-	//则是一整个行都被comment out
+	1. /t is tab; /b is back；  /0 is 空字符，自动添加到char【】的结尾
+	2. /* /**/ */ 不成立，因为结束于第一个*/ 
+	3. //则是一整个行都被comment out
+	4. back-slash \: 表示后面接的东西时string 的一部分。
+		" this is a \'"
+		"What is your problem ?/?"没有连着的两个？
 
 7. std::cout<<e; 将e的值写到标准流，之后就可以做链式输出；
 8. const: 程序必须在创造的时候定义，这样保证其在运算过程中不变；并且，这只是一个标记，任何变量前面都可以加这个东西。字符串直接量：const string （别忘了最后还一个\0,这个是自动添加的）
@@ -1277,5 +1280,31 @@ a. a+b， 两个都有address. 所以你无法a+b, 只能a-b!
 
 【教训】32.不要destroy 一个未经initialize的memory！一定要initialize!!!
 
+【解释】33. constexpr
+		 1. compile time 时evaluate 某个function，variable 值。 
+		 	eg. constexpr int return_size(){return 100;}
+			    int main(){int arr[return_size()};
+		 2. static class member： 你需要innitialize 他，
+		 	比方说class A{static int A = 3;}，不然，你需要class A{static const int b;} int A::b = 3; 
+		 3. return type should be literal type
+		 4. no try block inside. 
+		 5. 不应该有只有runtime 才有的东西， 比方说virtual function 及polymorphism 都不能用
+
+33.5 literal: it expresses itself. int a = 1, 1 is the literal, it doesn't have any memory . 
+
+34. template <int N>? This is non-type template. Used for initializing the size of an template array at compile time. 
+	template <typename T, int N> T arr[N]; 如果size 不在compile time 知道，那么就会报错！
+
+35. volatile: 
+	1. 让一个variable可以被当前code 之外的code 改变值。在multi-tyhreading 非常有用
+	2. 因为他的值可能在任何时候改变，所以我们volatile 上没有optimization。 
+	3. embedded system中， volatile 允许hardware 来改变register 值，但是const 不允许用户来改。不过，要是一个*volatile 的object 可以被进行修改， 这种方法叫aliasing non-const pointer。 
+	int main(){
+		    const volatile int h = 4;
+   		    int *c  = (int*)&h;			//不然这个是const volatile int*
+    		    *c = 5;
+        	    cout<<h;}
+	
+	
 
 
