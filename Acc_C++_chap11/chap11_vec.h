@@ -18,7 +18,7 @@
 
 #ifndef ACCELERATED_C_TEXTBOOK_H
 #define ACCELERATED_C_TEXTBOOK_H
-#include<cstddef>           //for size_t
+#include <cstddef>           //for size_t
 #include <memory>           // for std::allocator
 #include <iostream>
 #include <initializer_list>     // for initializer

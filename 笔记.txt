@@ -20,9 +20,12 @@ std::cout<<"hello world"<<std::endl； = (std::cout<<"hello world")<<std::endl;
 	// 
 	#include 名称
 6. 符号
-	/t is tab; /b is back；  /0 is 空字符，自动添加到char【】的结尾
-	/* /**/ */ 不成立，因为结束于第一个*/ 
-	//则是一整个行都被comment out
+	1. /t is tab; /b is back；  /0 is 空字符，自动添加到char【】的结尾
+	2. /* /**/ */ 不成立，因为结束于第一个*/ 
+	3. //则是一整个行都被comment out
+	4. back-slash \: 表示后面接的东西时string 的一部分。
+		" this is a \'"
+		"What is your problem ?/?"没有连着的两个？
 
 7. std::cout<<e; 将e的值写到标准流，之后就可以做链式输出；
 8. const: 程序必须在创造的时候定义，这样保证其在运算过程中不变；并且，这只是一个标记，任何变量前面都可以加这个东西。字符串直接量：const string （别忘了最后还一个\0,这个是自动添加的）
@@ -139,6 +142,8 @@ char: 1 byte.
 	
 	3. Value Initialization: 在Map中，当一个新的key出现的时候，element会自动initialize to 0. 又称zero initialization
 
+	4. pointer initialization: 他没有default initialization, 因为compiler 自动添加null 会占地方， 占时间.所以你必须自己添加！！
+
 6. 在command line里结束输入一个文件，ctrl+d （linux），或ctrl+z
 6. vector<T>v: vector of T type. vector应用的是template class
 	a. v.push_back(num): 在添加一个新的数的同时，也将其size自动加1（side effect）. 并且这个是一个相对普适的
@@ -169,8 +174,7 @@ char: 1 byte.
 	here int a is a parameter,其实是一个local variable. In int main(){}, you can pass Arguments to Initialize parameters.
 	这样，你实际上是copy argument 的值给local variable a， 你自然也可以改变这个a！
 
-2. Throw: 当你有error的时候，你可以见一个domain_error 类型的exception object，然后副带上一个error msg。domain erorr在<stdexcpet>定义。 同时，你要有std::domain_error
-	 throw domain_error("Peligroso!") 当程序执行了throw 之后,程序会产生这个exception object， 然后退出这一个function。 你可以在主function中接着个exception object 来产生 error message？？
+
 
 3. reference const vector<double>& hw_ref = hw, in which hw is a vecotr of double type. & is called refernce, 其实就是一个别名。 你叫hw_ref 其实就是在hw上做事情。 const 其实是保证只有 reading, 没有writing。 
 	double reference： const vector<double>&hw_ref = hw_ref, 其实就是指向hw 本身。 如果你只有vector<double>&hw_ref = hw_ref， 这个不成立，因为你只能用const 指向const， 不能用普通的指向非const
@@ -813,8 +817,6 @@ you put the definition in function declaration in hfile!
 
 ￥￥￥	i. 【偏】syntax sugar: int *i; *(i+10)完全等价于i[10], 而*(10+i) = *(i+10), 所以10[i]也是可以的！！
 
-	j. Destructor: no return type, no argument, and it is responsible for 清除memory allocation. 
-	【注意】destructor 对built-in type 不做任何的事情。 哪怕指针被destroy 的时候也不会被free。 所以，你要手动把built-in type的指针清除掉！！
 
 	o. 三位一体原则，the rule of three: 1. 要有destructor,来释放pointer, 尤其是built-in　（不然就是memory　leak, momory is not released when it's not needed anymore）  2. 有相应的copy, assignement operator. （不然的话，两个copy 都会把指针都copy 过去了。你destruct 一个有可能把另一个也给destruct了）所以，你要像对待constructor 一样对待他们。 3. 要有constructor, 尤其是default constructor. 
 		T::T();
@@ -872,7 +874,20 @@ define the default constructor，即使这个default constructor 是和synthesiz
 	a. 因为你有个constructor， 见4， 并且没有explicit, 所以你可以直接 str = "abc", 等价于 str("abc").
 		1. 其实具体细节是， 有个temprary Str 的object 被create， 然后str = temp
 
-6.     ~Str(){}                // can be omitted since no work is to be done.
+
+【解释】6. Destructor 
+	a. 定义： when the object is destroyed,  and it is responsible for 清除memory allocation. no return type, no argument. 
+	b. ~Str(){}                // can be omitted since no work is to be done., 因为系统可以自己synthesize 一个destructor。
+	synthesized destructor 是一个inline public function. 
+	c. 做什么： nothing else but: destructor 会 call 自己的destructor -> （有destructor的）non static member destructor -> base class non virtual members 
+	d. call member destructor的顺序是constructor 的反顺序。 
+	e. delete 会call 你的destructor. 
+ 	【注意】f. destructor 对built-in type 只是set pointer to null, 但是指针被destroy 的时候不会被free。 所以，你要手动把built-in type的指针free掉！     
+	g. 不提倡你explicitly 用destructor 来删东西
+	h. new 会在heap上allocate memory, 所以你需要delete 来free 这个memory。而alloc， free 则是c 的memory delete system. 两者不能混淆。 
+	i. pointers： 如果你用了delete， 那么pointer 会被自动null。 如果仅仅是int* p = &a 这样的形式， 
+
+
 
 7. []的定义
 	a. 有两种overloaded Operator(就是我们自己定义的operator)： binary 和uniary. 并且，operator很多可以是Non member functions， 有些如[]则必须是member functions 
@@ -1156,19 +1171,6 @@ a. a+b， 两个都有address. 所以你无法a+b, 只能a-b!
 【解释】9. const member function in class 是只有read access. const object: const student_info student; 只有const member function 才可以在const obejct 上做事情。 
 【经验】10. 必须当member function的： 1. = assignment 2. overloaded operator 3. constructor 4. type conversion 5. virtual function
 【教训】11. member function, member variable 不能有同样的name！		
-【技巧】12. exception 是stdexcept里的母class，所以，他罩着所有error，比如domain_error. 不过，.what() 是一个virtual function。 所以要print一个未知type的exception，要catch (exception& e), 而不是catch(exception e). 
-
-		Class exception
-		{
-		public: virtual  const char* what() throw{return msg;}
-		private: msg;  		//默认值"std::exception"
-		}
-
-		class domain_error:public exception
-		{
-		public: const char* what() throw{return msg;}
-		private: msg;		// 
-		}
 
 
 	
@@ -1277,5 +1279,189 @@ a. a+b， 两个都有address. 所以你无法a+b, 只能a-b!
 
 【教训】32.不要destroy 一个未经initialize的memory！一定要initialize!!!
 
+【解释】33. constexpr
+		 1. compile time 时evaluate 某个function，variable 值。 
+		 	eg. constexpr int return_size(){return 100;}
+			    int main(){int arr[return_size()};
+		 2. static class member： 你需要innitialize 他，
+		 	比方说class A{static int A = 3;}，不然，你需要class A{static const int b;} int A::b = 3; 
+		只有integral type？？
+		 3. return type should be literal type
+		 4. no try block inside. 
+		 5. 不应该有只有runtime 才有的东西， 比方说virtual function 及polymorphism 都不能用
+
+
+34. template <int N>? This is non-type template. Used for initializing the size of an template array at compile time. 
+	template <typename T, int N> T arr[N]; 如果size 不在compile time 知道，那么就会报错！
+
+35. volatile: 
+	1. 让一个variable可以被当前code 之外的code 改变值。在multi-tyhreading 非常有用
+	2. 因为他的值可能在任何时候改变，所以我们volatile 上没有optimization。 
+	3. embedded system中， volatile 允许hardware 来改变register 值，但是const 不允许用户来改。不过，要是一个*volatile 的object 可以被进行修改， 这种方法叫aliasing non-const pointer。 
+	int main(){
+		    const volatile int h = 4;
+   		    int *c  = (int*)&h;			//不然这个是const volatile int*
+    		    *c = 5;
+        	    cout<<h;}
+ 
+【习惯】36. naming convention: underscore before variable name: class private class variable name. 比如private: _name; 
+
+【注意】37. int* p, q 不等于 int*p; int* q!而是 int*p; int q; 
+
+【解释】38. int types 
+		a. short 2 bytes, int 4 bytes, long 8 bytes. 每一个type 都有 unsigned. 
+		b. size_t 可以是long, 也可以是其他的int type
+		c. integer literals 是 0XAB 这种形式
+			 literal: it expresses itself. int a = 1, 1 is the literal, it doesn't have any memory . 
+		d. bool 可以被用作number
+		e. char 本身是一个short 的type
+		f. string literals 是一个const char*
+
+
+【解释】39. floating point
+		a. float, double, long double 都是floating point
+		b 3.1 是一个literal， -3.1 是一个expression， 因为一个literal 就是sequence of bits。 
+		c. 312E5 是float， 312000是int
+
+expression vs statement
+		a. expression: sequence of operand and operators, can be evaluated directly. 
+		b. statement是构成一个program的框架。 比如说throw, catch等。 
+
+
+
+【解释】40. conversion: A operator B different types. 
+		a.  preserve info (int => float, double 会尽可能多的保留位数)
+		b. promotion: 两者取相对长的(short & int => int),但 又不占地方 (unsigned 比signed 更好)
+		Exception: short/short char 会被转化成int
+		c. 长的到短的 (long => int)取modulo 2^n （短的digits）,  float 到int（去掉小数部分。若整数部分不fit，那么这个是undefined behaviour）
+
+【解释】41. enumerator
+		a. enum color {red, yellow, odd_color = 20;}	// 你可以定义其value，若不定义，则起始于0. 
+
+
+【解释】42. function overloading: 一个function name 在有不同的parameter的时候，可以被overloaded	
+		a. compile time 的时候会check 哪个overloaded function 会被call。 而这个取决于parameter
+		b. exact match > built - in conversion > class type conversion
+
+
+【解释】43. Operator overridding
+		a. 会改变的是meaning， 而不会改变associativity (从右往左evaluate 还是从左往右), valence (# of operands), precedence
+		b. 不会改变built-in operator
+		c. *. :  .  throw  ?: cannot be overloaded
+
+
+【解释】44. statements
+		a. continue: jump to the beginining of the nearest do, while, for, switch
+		b. break: jumps to the end of the nearest do, while, for, switch
+
+
+【解释】45. exceptions
+		a. 基本用法： try {throw statement} catch(msg_type){statement}: 一旦出错，比方说 throw domain_error("Peligroso!") 当程序执行了throw 之后,程序会产生这个exception object， 然后退出这一个function。 error 信息就会往下走，如果不行在浮上一层，直到遇到一个catch 为止。 这个type 可以是domain_error, logic_error等等。 在<stdexcpet>定义。
+		b. 你可以try{throw "lol"} catch(string s){}就是throw不同类型的string。  message
+		c. try {throw std::logic_error("lol")} catch(std::exception & e){cerr<<e.what()}	//exception是base class， 用&可以用polymorphism来找到相应的exception message。 
+		d. 在一个class 中, 你可以自己定义一个what。 throw()代表没有人和exception 可以被throw（所以我们只是return string.）。 你可以throw(std::logic_error)
+来表示我们可以throw logic_error. 注意，这个check 的过程发生在runtime， 而不是compile time。 
+
+			class foo:public exception{
+				virtual const char* what() const throw()
+								{return "peligroso";}
+		e. exception 是stdexcept里的母class，所以，他罩着所有error，比如domain_error. 不过，.what() 是一个virtual function。 所以要print一个未知type的exception，要catch (exception& e), 而不是catch(exception e). 
+
+		Class exception
+		{
+		public: virtual  const char* what() throw{return msg;}
+		private: msg;  		//默认值"std::exception"
+		}
+
+		class domain_error:public exception
+		{
+		public: const char* what() throw{return msg;}
+		private: msg;		// 
+		}
+
+
+
+【设计】46. const_iterator 的设计
+		a. 核心： const_iterator 不是constant iterator， 他内部的指针是可以变得，但是指向的东西是const。 所以你要么有两个不同的class， 要么考虑下面的方案。 
+		b. mutable 可能是一个很好的工具，他可以让这个指针本身会变，即使你用const template function.  
+		c. 多加一个bool 在template 里边也是一个不错的选择
+			1. 定义
+
+				#include<type_traits>
+				template <typename T, bool is_const = true>           
+				//we need to make this a separate class because of b++ and it cannot be in class ls for the 					underlying ls object
+				class node_itr              //= , != can be synthesized.
+				{
+				public:
+				    typedef typename std::conditional<is_const, node<T>*, node<T>* >::type node_T_ptr;}
+
+			2. iterator 要可以转化为const_iterator， 但是const_iterator 无法转化为iterator。 同时要保证iterator = 				iterator, const_iterator = const_iterator. 如下是一个copy constructor。 
+			
+				node_itr(node_itr<T,true>& n):data(n.data){}         //for conversion bw non-const to const.
+			你不用在定义其他的，因为synthesized = 就是要copy 你指向的address，进而如果你modify 了一个object，你的			iterator 有可能被Invalidate。 【问题】： 你没法将一个b.begin()这样的rvalue pass 给他??
+
+
+			3. 一定要保证使用iterator 时，你用pass by value, 而不是pass by reference
+
+				ls(const_iterator b,const_iterator e){uncrear(); ls_crear(b,e);}
+
+		d.std::iterator 的child class
+			1. template<class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = 				T&>. 
+			Argument 1: check out cpp reference for the iterator you want to implement, 
+			Argument 2: the type of object we are going to iterate over. 
+			Argument 3-5: use the default value. 
+
+
+			2. 你需要unqualified type (比方说去掉const volatile int 中的const volatile)来，这样你的pointer也是unqualified,也就有了弹性。不过，你需要用std::remove_cv_t来转换iterator 到const iterator.  (c++14)
+
+			3. conversion operator:   operator node_itr<const T>() const	
+			
+			4. 什么是const iterator? 是iterator over const type. 所以， 他是node_itr<const T>。 const T 在这里成为了			type。 
+
+			5. template里边可以进行简单的Type 处理. 比如template<class T, class unqualified_T = std::remove_cv_t<T> >            // specify node_itr<const T> for const_iterator
+			
+			7. destructor 不应该destroy 指向的delete,除非是在erase 里. 因为一个iterator 的消失本身并不代表指向的对象也会消失. 
+
+			5. eg. 
+				template<class T, class unqualified_T = std::remove_cv_t<T> >            // specify node_itr<const T> for const_iterator
+				class node_itr:public std::iterator<
+					std::bidirectional_iterato
+					node<T> >
+					{
+					public:
+					    node_itr(node<unqualified_T>* d = 0):data(d){}        //not node_itr& cuz it will be out of scope. but return a new node_itr?? If not, you have to modify data, which means you can never have a const iterator
+
+					    T& operator*() const {
+						return data->val;
+					    }
+
+					    operator node_itr<const T>() const			
+					    {
+						return node_itr<const T>(data);
+					    }
+					private:
+					    node<unqualified_T>* data;
+					}
+
+				    typedef node_itr<T> iterator;
+				    typedef node_itr<const T> const_iterator;
+		
+			
+
+
+
+【血泪教训】47. typename  在class 中一定要有typedef！！
+
+【设计】48. erase function 一定要return 一个pointer。 
+		a. 注意要讨论prev， after 是否存在
+		b. double free: 你delete 掉了一个本来就要马上out of scope 的ｏｂｊｅｃｔ
+		c. erase 要destroy 相应的iterator,
+		
+
+【技巧】49. for(expression a, expression b; something )， 用，
+
+【解释】50. list的设计
+		a. .end(), .begin()设计：
+			１．　有专门的_beg, _tail的pointer， 指向第一个和最后一个element。 .begin() 就是return 一个由_beg 构建的iterator的value， .end(), 则是一个由null pointer 构建的value， 因为最后一个element 一定指向一个null。
 
 

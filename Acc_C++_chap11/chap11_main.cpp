@@ -3,6 +3,7 @@
 //
 #include "chap11_vec.h"
 #include "11_5.h"
+#include "chap11_list.h"
 #include <iostream>
 //#include <cstring>
 #include <string>
@@ -27,5 +28,5 @@ using std::istream;
 using std::copy;
 int main(int argc,char**argv)
 {
-test_11_5();
+test_list();
 }

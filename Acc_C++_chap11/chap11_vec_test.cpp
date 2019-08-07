@@ -26,14 +26,18 @@ int test_vec()
     student_info stu;
     vec<student_info> s = {stu};
     s.push_back(stu);
+
+    //basic utility test
+/*    const vec<int> f = {1,2,3};
+    *(f.begin()) = 100;*/
     //print
     print_vec<int>(a);
     print_vec<int>(b);
     print_vec<int>(c);
     print_vec<int>(d);
     print_vec<int>(e);
-    print_vec<int>(c);
-    print_vec<int>(e);
+    print_vec<int>(f);
+
 
     return 0;
 }

@@ -10,29 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e864991e-70e0-4f36-a510-1642030dab99" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Acc_C++_chap11/11_5.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Acc_C++_chap11/11_5.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Acc_C++_chap11/chap11_student_info.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Acc_C++_chap11/chap11_student_info.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Acc_C++_chap11/chap11_vec.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Acc_C++_chap11/chap11_vec_test.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Acc_C++_chap11/students1000.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Acc_C++_chap9/9_5.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Acc_C++_chap9/9_5.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Acc_C++_chap11/chap11_list.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Acc_C++_chap11/chap11_list_test.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Acc_C++_chap10/.Acc_C++_chap10.cpp.swo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Acc_C++_chap10/Acc_C++_chap10.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Acc_C++_chap11/chap11_main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Acc_C++_chap10/chap10_funcs.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Acc_C++_chap10/chap10_funcs.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Acc_C++_chap10/sample_in.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Acc_C++_chap11/sample_in.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Acc_C++_chap10/sample_out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Acc_C++_chap11/sample_out.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Acc_C++_chap8/8_funcs.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Acc_C++_chap8/8_funcs.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Acc_C++_chap8/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Acc_C++_chap8/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Acc_C++_chap9/9_1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Acc_C++_chap9/9_1.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Acc_C++_chap9/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Acc_C++_chap9/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Acc_C++_chap9/textbook.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Acc_C++_chap9/textbook.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Andrew-Koening-and-Barbara-E.-Moo-Accelerated-C-.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/Andrew-Koening-and-Barbara-E.-Moo-Accelerated-C-.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/github_notes.md" beforeDir="false" afterPath="$PROJECT_DIR$/github_notes.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Acc_C++_chap11/chap11_main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Acc_C++_chap11/chap11_main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Acc_C++_chap11/chap11_vec.h" beforeDir="false" afterPath="$PROJECT_DIR$/Acc_C++_chap11/chap11_vec.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Acc_C++_chap11/chap11_vec_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Acc_C++_chap11/chap11_vec_test.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/笔记.txt" beforeDir="false" afterPath="$PROJECT_DIR$/笔记.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -109,6 +92,12 @@
       <workItem from="1564169236723" duration="19555000" />
       <workItem from="1564247305406" duration="7093000" />
       <workItem from="1564254716485" duration="1646000" />
+      <workItem from="1564256628686" duration="8873000" />
+      <workItem from="1564333049533" duration="11749000" />
+      <workItem from="1564420227725" duration="12091000" />
+      <workItem from="1564963088746" duration="9336000" />
+      <workItem from="1565110205967" duration="23928000" />
+      <workItem from="1565202310182" duration="6921000" />
     </task>
     <servers />
   </component>
