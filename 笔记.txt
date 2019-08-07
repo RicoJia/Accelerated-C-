@@ -1456,6 +1456,7 @@ expression vs statement
 		a. 注意要讨论prev， after 是否存在
 		b. double free: 你delete 掉了一个本来就要马上out of scope 的ｏｂｊｅｃｔ
 		c. erase 要destroy 相应的iterator,
+		d. 安全措施： assert(pointer!=0)。 如果这个evaluate 为false 的话， 那么就会有一个message说aborted，也就是这个pointer 为0. 
 		
 
 【技巧】49. for(expression a, expression b; something )， 用，
